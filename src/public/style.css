@@ -1,0 +1,148 @@
+:root {
+    --text-col: white;
+    --text-hover-col: #eeeeee;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+audio#playing {
+    width: 100vw;
+}
+
+div#music-controls {
+    display: flex;
+    width: 100vw;
+    height: 5vh;
+    background-color: grey;
+}
+
+div#music-controls>button:hover {
+    background-color: #5f5f5f;
+}
+
+input#seek-slider {
+    width: 100%;
+    height: 100%;
+    margin: 0 1vw;
+}
+
+button#play-pause {
+    height: 100%;
+    padding: 0;
+    width: 5%;
+    font-size: 1.5rem;
+    background-color: transparent;
+    border: none;
+    color: var(--text-col);
+    cursor: pointer;
+}
+
+button#play-pause:hover {
+    color: var(--text-hover-col);
+}
+
+button#volume {
+    background-color: transparent;
+    border: none;
+    width: 5%;
+}
+
+span#audio-time {
+    color: var(--text-col);
+}
+
+span#audio-time>p {
+    margin-right: 0.5vw;
+}
+
+button#volume:hover {
+    cursor: pointer;
+}
+
+span#audio-time {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+p#volume-text {
+    color: white;
+    height: 100%;
+    width: 7%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+span#audio-time>p {
+    display: inline-block;
+}
+
+div#app-container {
+    height: 90vh;
+}
+
+div#music-info {
+    background-color: #5f5f5f;
+    color: white;
+    border-radius: 1vw 1vw 0 0;
+    height: 5vh;
+    width: 100vw;
+    display: inline-flex;
+    justify-content: center;
+}
+
+span#song-text-info {
+    display: inline-flex;
+}
+
+span#song-text-info>p {
+    margin-right: 0.5vw;
+}
+
+img#song-cover {
+    height: 4vh;
+    margin: 0.5vh;
+    border-radius: 10px;
+}
+
+div#top-bar {
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+input#search {
+    width: 80vw;
+    padding: 0.5rem;
+}
+   
+@media (max-width: 800px) {
+    .volume-controls {
+        display: none !important;
+    }
+
+    button#play-pause {
+        width: 25%;
+    }
+
+    div#music-controls {
+        height: 8vh;
+    }
+
+    div#app-container {
+        height: 87vh;
+    }
+
+    span#audio-time {
+        width: 25%;
+        justify-content: center;
+    }
+}
