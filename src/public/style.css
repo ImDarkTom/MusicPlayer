@@ -10,6 +10,7 @@ body, html {
     margin: 0;
     padding: 0;
     border: 0;
+    height: 100dvh;
     background-color: var(--main-bg-col);
 }
 
@@ -89,14 +90,14 @@ span#audio-time>p {
 }
 
 div#app-container {
-    height: 90vh;
+    height: 90%;
 }
 
 div#music-info {
     background-color: #5f5f5f;
     color: var(--text-col);
     border-radius: 1vw 1vw 0 0;
-    height: 5vh;
+    height: 5%;
     width: 100vw;
     display: inline-flex;
     justify-content: center;
@@ -111,8 +112,8 @@ span#song-text-info>p {
 }
 
 img#song-cover {
-    height: 4vh;
-    margin: 0.5vh;
+    height: 4dvh;
+    margin: 0.5dvh;
     border-radius: 10px;
 }
 
@@ -148,11 +149,11 @@ input#search {
     }
 
     div#music-controls {
-        height: 8vh;
+        height: 8%;
     }
 
     div#app-container {
-        height: 87vh;
+        height: 87%;
     }
 
     span#audio-time {
