@@ -1,12 +1,16 @@
 :root {
     --text-col: white;
     --text-hover-col: #eeeeee;
+    --bar-bg: grey;
+    --bar-bg-hover: #5f5f5f;
+    --main-bg-col: #eeeeee;
 }
 
 body, html {
     margin: 0;
     padding: 0;
     border: 0;
+    background-color: var(--main-bg-col);
 }
 
 audio#playing {
@@ -17,11 +21,11 @@ div#music-controls {
     display: flex;
     width: 100vw;
     height: 5vh;
-    background-color: grey;
+    background-color: var(--bar-bg);
 }
 
 div#music-controls>button:hover {
-    background-color: #5f5f5f;
+    background-color: var(--bar-bg-hover);
 }
 
 input#seek-slider {
@@ -70,7 +74,7 @@ span#audio-time {
 }
 
 p#volume-text {
-    color: white;
+    color: var(--text-col);
     height: 100%;
     width: 7%;
     display: flex;
@@ -90,7 +94,7 @@ div#app-container {
 
 div#music-info {
     background-color: #5f5f5f;
-    color: white;
+    color: var(--text-col);
     border-radius: 1vw 1vw 0 0;
     height: 5vh;
     width: 100vw;
@@ -122,6 +126,16 @@ div#top-bar {
 input#search {
     width: 80vw;
     padding: 0.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --text-col: white;
+        --text-hover-col: #eeeeee;
+        --bar-bg: grey;
+        --bar-bg-hover: #5f5f5f;
+        --main-bg-col: #222222;
+    }
 }
    
 @media (max-width: 800px) {
