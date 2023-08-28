@@ -72,24 +72,39 @@ playingAudio.addEventListener('loadedmetadata', () => {
     seekSlider.setAttribute('max', songDuration);
 });
 
-searchBox.addEventListener('keyup', async (e) => {
-    if (e.key == "Enter") {
-        playSong(searchBox.value);
-        return;
-    }
-
-    const response = await fetch(`/search?q=${searchBox.value}`);
+async function listSongResults(query) {
+    const response = await fetch(`/search?q=${query}`);
     const results = await response.json();
 
     searchResults.innerHTML = "";
 
     for (const result of results) {
         const option = document.createElement('option');
-        option.value = result;
-        option.textContent = result;
+        const btn = document.createElement('button');
+        option.appendChild(btn);
+        btn.textContent = result;
 
         searchResults.appendChild(option);
     }
+}
+
+searchBox.addEventListener('click', () => {
+    listSongResults(searchBox.value);
+});
+
+searchBox.addEventListener('input', (e) => {
+    if (e.inputType == "insertReplacementText") {
+        playSong(e.data);
+    }
+});
+
+searchBox.addEventListener('input', (e) => {
+    if (e.key == "Enter") {
+        playSong(searchBox.value);
+        return;
+    }
+
+    listSongResults(searchBox.value);
 });
 
 async function loadSongMetaData(fileName) {

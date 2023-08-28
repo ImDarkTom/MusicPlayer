@@ -1,4 +1,5 @@
 const express = require('express');
+const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
@@ -6,6 +7,8 @@ const ID3 = require('node-id3');
 
 const app = express();
 const port = 3000;
+
+const acceptedFileTypes = [".mp3", ".wav", ".ogg", ".aac"];
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -52,12 +55,34 @@ app.get('/song/:fileName', async (req, res) => {
 app.get("/search", (req, res) => {
     const query = req.query.q.toLowerCase();
 
-    const acceptedFileTypes = [".mp3", ".wav", ".ogg", ".aac"];
     const files = fs.readdirSync(path.join(__dirname, '..', 'music')).filter(file => acceptedFileTypes.includes(path.extname(file).toLowerCase()));
 
     const results = files.filter(file => file.toLowerCase().includes(query));
 
     res.send(results);
+});
+
+//Uploads
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'music/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
+
+const audioFilter = function (req, file, cb) {
+    const ext = path.extname(file.originalname);
+    if (acceptedFileTypes.includes(ext)) {
+        cb(null, true);
+    }
+};
+
+const upload = multer({ storage: storage, fileFilter: audioFilter});
+
+app.post('/upload', upload.single('file'), (req, res) => {
+    res.status(200).json({ message: 'File uploaded successfully' });
 });
 
 app.listen(port, () => {

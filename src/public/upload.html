@@ -6,6 +6,37 @@
     <title>Upload | Music Player</title>
 </head>
 <body>
-    <h1>WIP</h1>
+    <h1>File Upload</h1>
+    <input type="file" id="fileInput" accept=".mp3, .wav, .ogg, .aac">
+    <button onclick="uploadFile()">Upload</button>
+    <p id="status"></p>
+
+    <script>
+        function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        const statusElement = document.getElementById('status');
+                        statusElement.textContent = data.message;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            } else {
+                console.log('No file selected');
+            }
+        }
+    </script>
 </body>
+
 </html>
