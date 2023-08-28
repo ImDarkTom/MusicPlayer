@@ -98,7 +98,7 @@ searchBox.addEventListener('input', (e) => {
     }
 });
 
-searchBox.addEventListener('input', (e) => {
+searchBox.addEventListener('keyup', (e) => {
     if (e.key == "Enter") {
         playSong(searchBox.value);
         return;
