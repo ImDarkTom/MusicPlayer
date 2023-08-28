@@ -129,6 +129,21 @@ input#search {
     padding: 0.5rem;
 }
 
+button#loop-song {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    height: 5%;
+    width: 5%;
+    font-size: 1.2rem;
+}
+
+button#loop-song.enabled {
+    background-color: var(--bar-bg);
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
         --text-col: white;
@@ -146,6 +161,10 @@ input#search {
 
     button#play-pause {
         width: 25%;
+    }
+
+    button#loop-song {
+        width: 15%;
     }
 
     div#music-controls {

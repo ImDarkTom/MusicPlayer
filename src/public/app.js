@@ -15,6 +15,8 @@ const songNameText = document.querySelector('p#song-name');
 const searchBox = document.querySelector('input#search');
 const searchResults = document.querySelector('datalist#song-search-results');
 
+const loopBtn = document.querySelector('button#loop-song');
+
 function calculateTime(secs) {
     const minutes = Math.floor(secs / 60);
     const seconds = Math.round(secs % 60);
@@ -105,6 +107,16 @@ searchBox.addEventListener('keyup', (e) => {
     }
 
     listSongResults(searchBox.value);
+});
+
+loopBtn.addEventListener('click', () => {
+    if (playingAudio.loop) {
+        playingAudio.loop = false;
+        loopBtn.classList.remove('enabled');
+    } else {
+        playingAudio.loop = true;
+        loopBtn.classList.add('enabled');
+    }
 });
 
 async function loadSongMetaData(fileName) {
