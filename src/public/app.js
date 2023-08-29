@@ -76,15 +76,14 @@ playingAudio.addEventListener('loadedmetadata', () => {
 
 async function listSongResults(query) {
     const response = await fetch(`/search?q=${query}`);
-    const results = await response.json();
+    const [titles, files] = await response.json();
 
     searchResults.innerHTML = "";
 
-    for (const result of results) {
+    for (const index in files) {
         const option = document.createElement('option');
-        const btn = document.createElement('button');
-        option.appendChild(btn);
-        btn.textContent = result;
+        option.textContent = titles[index];
+        option.value = files[index];
 
         searchResults.appendChild(option);
     }
@@ -97,12 +96,14 @@ searchBox.addEventListener('click', () => {
 searchBox.addEventListener('input', (e) => {
     if (e.inputType == "insertReplacementText") {
         playSong(e.data);
+        searchBox.value = "";
     }
 });
 
+const nonInputKeys = ["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft", "Enter"];
+
 searchBox.addEventListener('keyup', (e) => {
-    if (e.key == "Enter") {
-        playSong(searchBox.value);
+    if (nonInputKeys.includes(e.key)) {
         return;
     }
 

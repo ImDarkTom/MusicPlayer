@@ -56,10 +56,21 @@ app.get("/search", (req, res) => {
     const query = req.query.q.toLowerCase();
 
     const files = fs.readdirSync(path.join(__dirname, '..', 'music')).filter(file => acceptedFileTypes.includes(path.extname(file).toLowerCase()));
+    let titles = [];
+    let fileNames = [];
 
-    const results = files.filter(file => file.toLowerCase().includes(query));
+    for (const file of files) {
+        const tags = ID3.read(path.join(__dirname, '..', 'music', file));
 
-    res.send(results);
+        const title = tags.title ? `${tags.artist ? tags.artist : "Uknown Artist"} - ${tags.title}` : file;
+
+        if (title.toLowerCase().includes(query)) {
+            titles.push(title);
+            fileNames.push(file);
+        }
+    }
+
+    res.send([titles, fileNames]);
 });
 
 //Uploads
