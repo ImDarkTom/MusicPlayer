@@ -148,10 +148,11 @@ ul#search-results {
 }
 
 li.search-result {
-    background-color: white;
-    color: black;
+    background-color: var(--main-bg-col);
+    color: var(--text-col);
     height: 10dvh;
     margin-bottom: 2dvh;
+    width: 100%;
     cursor: pointer;
 }
 
@@ -227,5 +228,15 @@ button#loop-song.enabled {
     span#audio-time {
         width: 25%;
         justify-content: center;
+    }
+
+    li.search-result {
+        height: 10dvh;
+        margin-bottom: 2dvh;
+    }
+
+    ul#search-results {
+        width: 100vw;
+        max-height: 60dvh;
     }
 }
