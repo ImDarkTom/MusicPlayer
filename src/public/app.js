@@ -93,13 +93,6 @@ async function listSongResults(query) {
     }
 }
 
-searchBox.addEventListener('input', (e) => {
-    if (e.inputType == "insertReplacementText") {
-        playSong(e.data);
-        searchBox.value = "";
-    }
-});
-
 const nonInputKeys = ["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft", "Enter"];
 
 searchBox.addEventListener('keyup', (e) => {
