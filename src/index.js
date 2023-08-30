@@ -12,33 +12,65 @@ const acceptedFileTypes = [".mp3", ".wav", ".ogg", ".aac"];
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/details/:fileName', async (req, res) => {
-    const filePath = path.join(__dirname, '..', 'music', req.params.fileName);
+function loadFileMetadata(fileName) {
+    const filePath = path.join(__dirname, '..', 'music', fileName);
 
     if (!fs.existsSync(filePath)) {
-        res.status(404);
-        return;
+        return -1;
     }
 
-    const tags = ID3.read(filePath);
+    return ID3.read(filePath);
+}
 
-    if (!tags.title) {
+function optimiseFileMetadata(fileName) {
+    const metadata = loadFileMetadata(fileName);
+
+    if (metadata === -1) {
+        return -1;
+    }
+
+    if (!metadata.title) {
         tags.title = req.params.fileName;
     }
 
-    if (!tags.artist) {
+    if (!metadata.artist) {
         tags.artist = "Unknown Artist";
     }
 
-    if (!tags.album) {
+    if (!metadata.album) {
         tags.album = "Unknown Album";
     }
 
-    if (tags.image) {
-        tags.image.imageBuffer = tags.image.imageBuffer.toString('base64');
+    if (metadata.image) {
+        metadata.image = "";
     }
 
-    res.json(tags);
+    if (metadata.raw) {
+        metadata.raw = "";
+    }
+
+    return metadata;
+}
+
+app.get('/details/:fileName', async (req, res) => {
+    const metadata = optimiseFileMetadata(req.params.fileName);
+
+    if (metadata === -1) {
+        res.status(404);
+    }
+
+    res.json(metadata);
+});
+
+app.get('/details/:fileName/image', async (req, res) => {
+    const rawMetadata = loadFileMetadata(req.params.fileName);
+
+    if (!rawMetadata.image) {
+        res.redirect('/img/noimage.jpg');
+        return;
+    }
+
+    res.send(rawMetadata.image.imageBuffer);
 });
 
 app.get('/song/:fileName', async (req, res) => {
@@ -56,21 +88,22 @@ app.get("/search", (req, res) => {
     const query = req.query.q.toLowerCase();
 
     const files = fs.readdirSync(path.join(__dirname, '..', 'music')).filter(file => acceptedFileTypes.includes(path.extname(file).toLowerCase()));
-    let titles = [];
+    let songDetails = [];
     let fileNames = [];
 
     for (const file of files) {
         const tags = ID3.read(path.join(__dirname, '..', 'music', file));
 
-        const title = tags.title ? `${tags.artist ? tags.artist : "Uknown Artist"} - ${tags.title}` : file;
+        const title = tags.title ? tags.title : file;
+        const artist = tags.artist ? tags.artist : "Unknown Artist";
 
         if (title.toLowerCase().includes(query)) {
-            titles.push(title);
+            songDetails.push({title: title, artist: artist});
             fileNames.push(file);
         }
     }
 
-    res.send([titles, fileNames]);
+    res.send([songDetails, fileNames]);
 });
 
 //Uploads

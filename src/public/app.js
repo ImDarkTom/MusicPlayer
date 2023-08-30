@@ -13,7 +13,8 @@ const artistText = document.querySelector('p#song-artist');
 const songNameText = document.querySelector('p#song-name');
 
 const searchBox = document.querySelector('input#search');
-const searchResults = document.querySelector('datalist#song-search-results');
+const searchResults = document.querySelector('ul#search-results');
+const searchResultTemplate = document.querySelector('template#search-result-template');
 
 const loopBtn = document.querySelector('button#loop-song');
 
@@ -76,22 +77,21 @@ playingAudio.addEventListener('loadedmetadata', () => {
 
 async function listSongResults(query) {
     const response = await fetch(`/search?q=${query}`);
-    const [titles, files] = await response.json();
+    const [songDetails, files] = await response.json();
 
     searchResults.innerHTML = "";
 
     for (const index in files) {
-        const option = document.createElement('option');
-        option.textContent = titles[index];
-        option.value = files[index];
+        const clone = searchResultTemplate.content.cloneNode(true);
 
-        searchResults.appendChild(option);
+        clone.querySelector('li').onclick = function() {playSong(files[index]);};
+        clone.querySelector('p.result-song-title').textContent = songDetails[index].title;
+        clone.querySelector('p.result-song-artist').textContent = songDetails[index].artist;
+        clone.querySelector('img').src = `/details/${files[index]}/image`;
+
+        searchResults.appendChild(clone);
     }
 }
-
-searchBox.addEventListener('click', () => {
-    listSongResults(searchBox.value);
-});
 
 searchBox.addEventListener('input', (e) => {
     if (e.inputType == "insertReplacementText") {
@@ -104,6 +104,10 @@ const nonInputKeys = ["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft", "Enter"
 
 searchBox.addEventListener('keyup', (e) => {
     if (nonInputKeys.includes(e.key)) {
+        return;
+    }
+
+    if (searchBox.value.length < 2) {
         return;
     }
 
@@ -123,26 +127,8 @@ loopBtn.addEventListener('click', () => {
 async function loadSongMetaData(fileName) {
     const response = await fetch(`/details/${fileName}`);
     const data = await response.json();
-
-    let imageUrl;
-
-    if (data.image) {
-        const base64Image = data.image.imageBuffer;
-        const binaryString = atob(base64Image);
-        const imageArrayBuffer = new ArrayBuffer(binaryString.length);
-        const imageUint8Array = new Uint8Array(imageArrayBuffer);
-
-        for (let i = 0; i < binaryString.length; i++) {
-            imageUint8Array[i] = binaryString.charCodeAt(i);
-        }
-
-        const imageBlob = new Blob([imageArrayBuffer], { type: 'image/jpeg' });
-        imageUrl = URL.createObjectURL(imageBlob);
-    } else {
-        imageUrl = "/img/noimage.jpg";
-    }
     
-    songCover.src = imageUrl;
+    songCover.src = `/details/${fileName}/image`;
     artistText.textContent = data.artist;
     songNameText.textContent = data.title;
 }

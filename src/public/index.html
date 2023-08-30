@@ -10,10 +10,11 @@
 <body>
 
     <div id="app-container">
-        <div id="top-bar">
+        <div id="centered-content">
             <input type="text" id="search" placeholder="Search..." list="song-search-results">
         </div>
         <datalist id="song-search-results"></datalist>
+        <ul id="search-results"></ul>
     </div>
 
     <div id="music-info">
@@ -35,5 +36,14 @@
         <input type="range" id="volume-slider" class="volume-controls" max="100" value="100">
         <p id="volume-text" class="volume-controls">100%</p>
     </div>
+    <template id="search-result-template">
+        <li class="search-result">
+            <img src="" class="result-album-cover">
+            <div class="result-text-info">
+                <p class="result-song-title"></p>
+                <p class="result-song-artist"></p>
+            </div>
+        </li>
+    </template>
 </body>   
 </html>
