@@ -105,6 +105,7 @@ div#music-info {
 
 span#song-text-info {
     display: inline-flex;
+    text-overflow: ellipsis;
 }
 
 span#song-text-info>p {
