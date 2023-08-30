@@ -97,7 +97,7 @@ app.get("/search", (req, res) => {
         const title = tags.title ? tags.title : file;
         const artist = tags.artist ? tags.artist : "Unknown Artist";
 
-        if (title.toLowerCase().includes(query)) {
+        if (`${artist} ${title}`.toLowerCase().includes(query)) {
             songDetails.push({title: title, artist: artist});
             fileNames.push(file);
         }
