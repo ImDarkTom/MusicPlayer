@@ -30,15 +30,15 @@ function optimiseFileMetadata(fileName) {
     }
 
     if (!metadata.title) {
-        tags.title = req.params.fileName;
+        metadata.title = req.params.fileName;
     }
 
     if (!metadata.artist) {
-        tags.artist = "Unknown Artist";
+        metadata.artist = "Unknown Artist";
     }
 
     if (!metadata.album) {
-        tags.album = "Unknown Album";
+        metadata.album = "Unknown Album";
     }
 
     if (metadata.image) {
