@@ -30,7 +30,7 @@ function optimiseFileMetadata(fileName) {
     }
 
     if (!metadata.title) {
-        metadata.title = req.params.fileName;
+        metadata.title = fileName;
     }
 
     if (!metadata.artist) {
