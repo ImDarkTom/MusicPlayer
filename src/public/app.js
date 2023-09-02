@@ -32,6 +32,7 @@ volumeButton.addEventListener('click', () => {
 
 playingAudio.addEventListener('pause', () => {
     playPauseBtn.textContent = "▶";
+    navigator.mediaSession.playbackState = 'paused';
 });
 
 volumeSlider.addEventListener('input', () => {
@@ -50,6 +51,7 @@ playingAudio.addEventListener('volumechange', () => {
 
 playingAudio.addEventListener('play', () => {
     playPauseBtn.textContent = "⏸";
+    navigator.mediaSession.playbackState = 'playing';
 });
 
 playPauseBtn.addEventListener('click', () => {
@@ -64,9 +66,19 @@ seekSlider.addEventListener('input', () => {
     playingAudio.currentTime = seekSlider.value;
 });
 
+playingAudio.addEventListener('ended', function () {
+    navigator.mediaSession.playbackState = 'none';
+});
+
 playingAudio.addEventListener('timeupdate', () => {
     seekSlider.value = Math.round(playingAudio.currentTime);
     audioCurrent.textContent = calculateTime(seekSlider.value)
+
+    navigator.mediaSession.setPositionState({
+        duration: seekSlider.max,
+        playbackRate: playingAudio.playbackRate,
+        position: Math.round(playingAudio.currentTime)
+    });
 });
 
 playingAudio.addEventListener('loadedmetadata', () => {
@@ -124,6 +136,18 @@ async function loadSongMetaData(fileName) {
     songCover.src = `/details/${fileName}/image`;
     artistText.textContent = data.artist;
     songNameText.textContent = data.title;
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+        title: data.title,
+        artist: data.artist,
+        album: data.album,
+        artwork: [
+            {
+                src: `/details/${fileName}/image`,
+                type: "image/jpeg"
+            }
+        ]
+    });
 }
 
 function playSong(fileName) {

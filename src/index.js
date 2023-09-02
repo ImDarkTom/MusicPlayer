@@ -70,6 +70,7 @@ app.get('/details/:fileName/image', async (req, res) => {
         return;
     }
 
+    res.setHeader('Content-Type', 'image/jpeg');
     res.send(rawMetadata.image.imageBuffer);
 });
 
