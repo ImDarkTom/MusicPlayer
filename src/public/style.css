@@ -198,12 +198,13 @@ button#loop-song.enabled {
 }
 
 div#recent-uploads-container {
-    margin: 5vw;
+    margin: 3dvh 5vw;
     padding: 0;
 }
 
 div#recent-uploads-container>h2 {
     color: white;
+    user-select: none;
     margin: 0;
 }
 
@@ -228,6 +229,7 @@ li.song-list-card {
     background-color: var(--card-color);
     margin: 1dvh 0.5vw;
     display: inline-block;
+    user-select: none;
     transition: filter 0.3s ease;
 }
 
