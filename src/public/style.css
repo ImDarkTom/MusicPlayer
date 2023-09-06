@@ -273,6 +273,19 @@ li.song-list-card>p.title {
     border-radius: 1rem;
 }
 
+.vertical-scroll-thin {
+    scrollbar-width: thin;
+}
+
+.vertical-scroll-thin::-webkit-scrollbar {
+    width: 0.5em;
+}
+
+.vertical-scroll-thin::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 1rem;
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
         --text-col: white;
