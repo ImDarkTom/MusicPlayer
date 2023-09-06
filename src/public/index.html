@@ -14,6 +14,10 @@
             <input type="text" id="search" placeholder="Search..." autocomplete="off">
         </div>
         <ul id="search-results"></ul>
+        <div id="recent-uploads-container">
+            <h2>Recent Uploads</h2>
+            <ul id="recent-uploads" class="song-list horizontal-scroll-thin"></ul>
+        </div>
     </div>
 
     <div id="music-info">
@@ -42,6 +46,13 @@
                 <p class="result-song-title"></p>
                 <p class="result-song-artist"></p>
             </div>
+        </li>
+    </template>
+    <template id="song-list-card-template">
+        <li class="song-list-card">
+            <img src="">
+            <p class="title"></p>
+            <p class="artist"></p>
         </li>
     </template>
 </body>   

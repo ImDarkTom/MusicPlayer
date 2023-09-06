@@ -107,6 +107,31 @@ app.get("/search", (req, res) => {
     res.send([songDetails, fileNames]);
 });
 
+app.get("/api/recents", (req, res) => {
+    const dir = path.join(__dirname, '..', 'music');
+    const files = fs.readdirSync(dir).filter(file => acceptedFileTypes.includes(path.extname(file).toLowerCase()));
+
+    files.sort(function (a, b) {
+        return fs.statSync(path.join(dir, a)).mtime.getTime() -
+            fs.statSync(path.join(dir, b)).mtime.getTime();
+    });
+
+    let songDetails = [];
+    let fileNames = [];
+
+    for (const file of files) {
+        const tags = ID3.read(path.join(__dirname, '..', 'music', file));
+
+        const title = tags.title ? tags.title : file;
+        const artist = tags.artist ? tags.artist : "Unknown Artist";
+
+        songDetails.push({ title: title, artist: artist });
+        fileNames.push(file);
+    }
+
+    res.json([songDetails.reverse(), fileNames.reverse()]);
+});
+
 //Uploads
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {

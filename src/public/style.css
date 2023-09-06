@@ -1,9 +1,11 @@
 :root {
-    --text-col: white;
+    --text-col: #ffffff;
     --text-hover-col: #eeeeee;
-    --bar-bg: grey;
+    --bar-bg: #808080;
     --bar-bg-hover: #5f5f5f;
     --main-bg-col: #eeeeee;
+    --card-color: #c1c1c1;
+    --darken-40: rgba(0, 0, 0, 0.4);
 }
 
 body, html {
@@ -143,8 +145,9 @@ ul#search-results {
     transform: translateX(-50%);
     margin: 0;
     padding: 0.5rem;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: var(--darken-40);
     overflow-y: scroll;
+    display: none;
 }
 
 li.search-result {
@@ -194,6 +197,82 @@ button#loop-song.enabled {
     background-color: var(--bar-bg);
 }
 
+div#recent-uploads-container {
+    margin: 5vw;
+    padding: 0;
+}
+
+div#recent-uploads-container>h2 {
+    color: white;
+    margin: 0;
+}
+
+ul#recent-uploads {
+    width: 90vw;
+    margin: 0;
+    padding-inline-start: 0.5vw;
+    padding-inline-end: 0.5vw;
+    overflow-x: scroll;
+    white-space: nowrap;
+    height: 30dvh;
+    overflow-y: hidden;
+}
+
+li.song-list-card {
+    cursor: pointer;
+    display: block;
+    height: 27dvh;
+    padding: 0;
+    width: 150px;
+    border-radius: 0.25em;
+    background-color: var(--card-color);
+    margin: 1dvh 0.5vw;
+    display: inline-block;
+    transition: filter 0.3s ease;
+}
+
+li.song-list-card:hover {
+    filter: brightness(1.2);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+li.song-list-card>img {
+    width: 80%;
+    height: auto;
+    margin: 10%;
+    border-radius: 5%;
+}
+
+li.song-list-card>p {
+    margin: 0 0 0 1vw;
+    width: calc(150px - 2vw);
+    /* to account for right margin */
+    text-align: left;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: var(--text-col);
+}
+
+li.song-list-card>p.title {
+    font-size: 1.1rem;
+    margin: 0 0 0.5dvh 1vw;
+}
+
+
+.horizontal-scroll-thin {
+    scrollbar-width: thin;
+}
+
+.horizontal-scroll-thin::-webkit-scrollbar {
+    height: 0.5em;
+}
+
+.horizontal-scroll-thin::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 1rem;
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
         --text-col: white;
@@ -201,6 +280,7 @@ button#loop-song.enabled {
         --bar-bg: grey;
         --bar-bg-hover: #5f5f5f;
         --main-bg-col: #222222;
+        --card-color: #181818;
     }
 }
    

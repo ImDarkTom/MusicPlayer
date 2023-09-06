@@ -18,6 +18,9 @@ const searchResultTemplate = document.querySelector('template#search-result-temp
 
 const loopBtn = document.querySelector('button#loop-song');
 
+const songListCardTemplate = document.querySelector('template#song-list-card-template');
+const recentUploadsList = document.querySelector('ul#recent-uploads');
+
 function calculateTime(secs) {
     const minutes = Math.floor(secs / 60);
     const seconds = Math.round(secs % 60);
@@ -119,6 +122,14 @@ searchBox.addEventListener('keyup', (e) => {
     listSongResults(searchBox.value);
 });
 
+searchBox.addEventListener('blur', (e) => {
+    searchResults.style.display = "none";
+});
+
+searchBox.addEventListener('focus', (e) => {
+    searchResults.style.display = "block";
+});
+
 loopBtn.addEventListener('click', () => {
     if (playingAudio.loop) {
         playingAudio.loop = false;
@@ -161,4 +172,28 @@ function setAudioVolume() {
     playingAudio.volume = (volumeSlider.value / 100);
 }
 
+async function loadSuggested() {
+    const response = await fetch(`/api/recents`);
+    const [songDetails, files] = await response.json();
+
+    for (const index in files) {
+        const clone = songListCardTemplate.content.cloneNode(true);
+        
+        const currentDetails = songDetails[index];
+        const title = currentDetails.title;
+        const artist = currentDetails.artist;
+
+        const baseElement = clone.querySelector('li');
+
+        baseElement.onclick = function() {playSong(files[index]);};
+        baseElement.title = `${artist} - ${title}`;
+        clone.querySelector('p.title').textContent = title;
+        clone.querySelector('p.artist').textContent = artist;
+        clone.querySelector('img').src = `/details/${files[index]}/image`;
+
+        recentUploadsList.appendChild(clone);
+    }
+}
+
 setAudioVolume();
+loadSuggested();
