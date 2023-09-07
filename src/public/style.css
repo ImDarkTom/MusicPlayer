@@ -197,18 +197,29 @@ button#loop-song.enabled {
     background-color: var(--bar-bg);
 }
 
-div#recent-uploads-container {
+button#fav-song {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    height: 5%;
+    width: 5%;
+    font-size: 1.2rem;
+}
+
+div.horizontal-song-list {
     margin: 3dvh 5vw;
     padding: 0;
 }
 
-div#recent-uploads-container>h2 {
+div.horizontal-song-list>h2 {
     color: white;
     user-select: none;
     margin: 0;
 }
 
-ul#recent-uploads {
+div.horizontal-song-list>ul.song-list {
     width: 90vw;
     margin: 0;
     padding-inline-start: 0.5vw;

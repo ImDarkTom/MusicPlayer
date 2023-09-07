@@ -14,13 +14,18 @@
             <input type="text" id="search" placeholder="Search..." autocomplete="off">
         </div>
         <ul id="search-results" class="vertical-scroll-thin"></ul>
-        <div id="recent-uploads-container">
+        <div id="recent-uploads-container" class="horizontal-song-list">
             <h2>Recent Uploads</h2>
             <ul id="recent-uploads" class="song-list horizontal-scroll-thin"></ul>
+        </div>
+        <div id="favs-list-container" class="horizontal-song-list">
+            <h2>Favourites</h2>
+            <ul id="fav-songs" class="song-list horizontal-scroll-thin"></ul>
         </div>
     </div>
 
     <div id="music-info">
+        <button id="fav-song">🤍</button>
         <img src="/img/noimage.jpg" alt="Album Cover" id="song-cover">
         <span id="song-text-info"><p id="song-artist">?</p><p>-</p><p id="song-name">?</p></span>
         <button id="loop-song">🔁</button>

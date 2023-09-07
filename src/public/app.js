@@ -17,9 +17,11 @@ const searchResults = document.querySelector('ul#search-results');
 const searchResultTemplate = document.querySelector('template#search-result-template');
 
 const loopBtn = document.querySelector('button#loop-song');
+const favBtn = document.querySelector('button#fav-song');
 
 const songListCardTemplate = document.querySelector('template#song-list-card-template');
 const recentUploadsList = document.querySelector('ul#recent-uploads');
+const favsSongsList = document.querySelector('ul#fav-songs');
 
 function calculateTime(secs) {
     const minutes = Math.floor(secs / 60);
@@ -140,9 +142,42 @@ loopBtn.addEventListener('click', () => {
     }
 });
 
+function getFavsList() {
+    const favs = localStorage.getItem('favourites');
+    return favs ? JSON.parse(favs) : [];
+}
+
+favBtn.addEventListener('click', () => {
+    const playingSong = playingAudio.dataset.filename;
+    const favsList = getFavsList();
+
+    if (favsList.includes(playingSong)) {
+        const updatedFavs = favsList.filter(item => item !== playingSong);
+
+        localStorage.setItem('favourites', JSON.stringify(updatedFavs));
+
+        favBtn.textContent = "🤍";
+        return;
+    }
+
+    favsList.unshift(playingAudio.dataset.filename);
+
+    localStorage.setItem('favourites', JSON.stringify(favsList));
+
+    favBtn.textContent = "❤️";
+});
+
 async function loadSongMetaData(fileName) {
+    const favsList = getFavsList();
+
     const response = await fetch(`/details/${fileName}`);
     const data = await response.json();
+
+    if (favsList.includes(fileName)) {
+        favBtn.textContent = "❤️";
+    } else {
+        favBtn.textContent = "🤍";
+    }
     
     songCover.src = `/details/${fileName}/image`;
     artistText.textContent = data.artist;
@@ -163,6 +198,7 @@ async function loadSongMetaData(fileName) {
 
 function playSong(fileName) {
     playingAudio.src = "/song/" + fileName;
+    playingAudio.dataset.filename = fileName;
     playingAudio.play();
     loadSongMetaData(fileName);
 }
@@ -173,6 +209,30 @@ function setAudioVolume() {
 }
 
 async function loadSuggested() {
+    //Favs
+    const favsList = getFavsList();
+
+    for (const favName of favsList) {
+        const clone = songListCardTemplate.content.cloneNode(true);
+
+        const baseElement = clone.querySelector('li');
+
+        const response = await fetch(`/details/${favName}`);
+        const songDetails = await response.json();
+
+        const artist = songDetails.artist;
+        const title = songDetails.title;
+
+        baseElement.onclick = function() {playSong(favName);};
+        baseElement.title = `${artist} - ${title}`;
+        clone.querySelector('p.title').textContent = title;
+        clone.querySelector('p.artist').textContent = artist;
+        clone.querySelector('img').src = `/details/${favName}/image`;
+
+        favsSongsList.appendChild(clone);
+    }
+
+    //Recents
     const response = await fetch(`/api/recents`);
     const [songDetails, files] = await response.json();
 
