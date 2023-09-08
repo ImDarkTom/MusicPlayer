@@ -10,8 +10,18 @@
 <body>
 
     <div id="app-container">
-        <div id="centered-content">
+        <div id="top-bar">
             <input type="text" id="search" placeholder="Search..." autocomplete="off">
+            <div id="menu-container">
+                <button id="menu">≡</button>
+                <ul id="dropdown-menu">
+                    <li id="upload-btn">Upload</li>
+                    <li>Settings</li>
+                </ul>
+            </div>
+        </div>
+        <div id="upload-background">
+            <iframe src="/upload.html" frameborder="0" id="upload-frame"></iframe>
         </div>
         <ul id="search-results" class="vertical-scroll-thin"></ul>
         <div id="recent-uploads-container" class="horizontal-song-list">

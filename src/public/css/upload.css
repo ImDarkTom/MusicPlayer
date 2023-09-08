@@ -1,0 +1,23 @@
+:root {
+    --bg-col: white;
+    --text-col: black;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    height: 100dvh;
+    background-color: var(--bg-col);
+    color: var(--text-col);
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+    text-align: center;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-col: grey;
+        --text-col: white;
+    }
+}

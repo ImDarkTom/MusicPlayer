@@ -16,6 +16,11 @@ const songListCardTemplate = select('template#song-list-card-template');
 const recentUploadsList = select('ul#recent-uploads');
 const favsSongsList = select('ul#fav-songs');
 
+const menuBtn = select('button#menu');
+const dropdownList = select('ul#dropdown-menu');
+
+const uploadBtn = select('li#upload-btn');
+const uploadMenuBg = select('div#upload-background');
 
 //Listeners
 favBtn.addEventListener('click', () => {
@@ -45,6 +50,25 @@ loopBtn.addEventListener('click', () => {
     } else {
         playingAudio.loop = true;
         loopBtn.classList.add('enabled');
+    }
+});
+
+
+menuBtn.addEventListener('click', () => {
+    if (dropdownList.style.display == "block") {
+        dropdownList.style.display = "none";
+    } else {
+        dropdownList.style.display = "block";
+    }
+});
+
+uploadBtn.addEventListener('click', () => {
+    uploadMenuBg.style.display = "block";
+});
+
+uploadMenuBg.addEventListener('click', (e) => {
+    if (e.target.id = "upload-background") { 
+        uploadMenuBg.style.display = "none";
     }
 });
 
