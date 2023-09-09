@@ -80,13 +80,15 @@ async function loadSongMetaData(fileName) {
     const response = await fetch(`/details/${fileName}`);
     const data = await response.json();
 
+    const imagePath = `/details/${fileName}/image`;
+
     if (favsList.includes(fileName)) {
         favBtn.textContent = "❤️";
     } else {
         favBtn.textContent = "🤍";
     }
     
-    songCover.src = `/details/${fileName}/image`;
+    songCover.src = imagePath;
     artistText.textContent = data.artist;
     songNameText.textContent = data.title;
 
@@ -96,7 +98,7 @@ async function loadSongMetaData(fileName) {
         album: data.album,
         artwork: [
             {
-                src: `/details/${fileName}/image`,
+                src: imagePath,
                 type: "image/jpeg"
             }
         ]

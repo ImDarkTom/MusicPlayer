@@ -7,6 +7,7 @@
     --card-color: #c1c1c1;
     --dropdown-bg: #141414;
     --darken-40: rgba(0, 0, 0, 0.4);
+    --card-width: 180px;
 }
 
 body, html {
@@ -99,7 +100,7 @@ div#app-container {
 }
 
 div#music-info {
-    background-color: #5f5f5f;
+    background-color: var(--bar-bg);
     color: var(--text-col);
     border-radius: 1vw 1vw 0 0;
     height: 5%;
@@ -301,7 +302,7 @@ li.song-list-card {
     display: block;
     height: 27dvh;
     padding: 0;
-    width: 150px;
+    width: var(--card-width);
     border-radius: 0.25em;
     background-color: var(--card-color);
     margin: 1dvh 0.5vw;
@@ -326,7 +327,7 @@ li.song-list-card>img {
 li.song-list-card>p {
     margin: 0 0 0 1vw;
     box-sizing: border-box;
-    width: 150px;
+    width: calc(var(--card-width) - 2vw);
     text-align: left;
     text-overflow: ellipsis;
     overflow: hidden;
