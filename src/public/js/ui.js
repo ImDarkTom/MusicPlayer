@@ -5,6 +5,7 @@ import * as audioModule from './audio.js'
 const select = (selector) => document.querySelector(selector);
 const playingAudio = select('audio#playing');
 
+const musicInfoBox = select('div#music-info')
 const songCover = select('img#song-cover');
 const artistText = select('p#song-artist');
 const songNameText = select('p#song-name');
@@ -103,6 +104,8 @@ async function loadSongMetaData(fileName) {
             }
         ]
     });
+
+    musicInfoBox.style["background-image"] = `url("${imagePath}")`;
 }
 
 async function loadSuggested() {

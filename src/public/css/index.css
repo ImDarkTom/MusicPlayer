@@ -7,7 +7,7 @@
     --card-color: #c1c1c1;
     --dropdown-bg: #141414;
     --darken-40: rgba(0, 0, 0, 0.4);
-    --card-width: 180px;
+    --card-width: clamp(150px, 18vw, 180px);
 }
 
 body, html {
@@ -101,17 +101,63 @@ div#app-container {
 
 div#music-info {
     background-color: var(--bar-bg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     color: var(--text-col);
     border-radius: 1vw 1vw 0 0;
     height: 5%;
     width: 100vw;
+}
+
+div#main-info {
+    width: 80vw;
     display: inline-flex;
     justify-content: center;
+    flex: 1;
+}
+
+.music-control-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0 1vw;
+    height: 100%;
+    width: 100%;
+    font-size: 1.2rem;
+    z-index: 1;
+}
+
+/* 
+button#loop-song {
+    
+}
+
+button#fav-song {
+
+} 
+*/
+
+button#loop-song.enabled {
+    background-color: var(--bar-bg);
+}
+
+div#bg-overlay {
+    width: 100vw;
+    height: 5%;
+    position: absolute;
+    backdrop-filter: blur(50px);
+    display: inline-flex;
+    justify-content: center;
+    border-radius: 1vw 1vw 0 0;
+    box-shadow: 0 0 1px black inset;
 }
 
 span#song-text-info {
     display: inline-flex;
     text-overflow: ellipsis;
+    text-shadow: 0 0 0.5rem black, 0 0 0.75rem black, 0 0 1rem black;
+    user-select: none;
 }
 
 span#song-text-info>p {
@@ -122,6 +168,8 @@ img#song-cover {
     height: 4dvh;
     margin: 0.5dvh;
     border-radius: 10px;
+    box-shadow: 0 0 0.75rem black;
+    user-select: none;
 }
 
 button#menu {
@@ -248,33 +296,6 @@ div.result-text-info {
     display: block
 }
 
-button#loop-song {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    right: 0;
-    height: 5%;
-    width: 5%;
-    font-size: 1.2rem;
-}
-
-button#loop-song.enabled {
-    background-color: var(--bar-bg);
-}
-
-button#fav-song {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    position: absolute;
-    left: 0;
-    height: 5%;
-    width: 5%;
-    font-size: 1.2rem;
-    z-index: 1;
-}
-
 div.horizontal-song-list {
     margin: 3dvh 5vw;
     padding: 0;
@@ -335,6 +356,7 @@ li.song-list-card>p {
 }
 
 li.song-list-card>p.title {
+    font-weight: bold;
     font-size: 1.1rem;
     margin: 0 0 0.5dvh 1vw;
 }

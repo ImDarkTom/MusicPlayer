@@ -35,10 +35,23 @@
     </div>
 
     <div id="music-info">
-        <button id="fav-song">🤍</button>
-        <img src="/img/noimage.jpg" alt="Album Cover" id="song-cover">
-        <span id="song-text-info"><p id="song-artist">?</p><p>-</p><p id="song-name">?</p></span>
-        <button id="loop-song">🔁</button>
+        <div id="bg-overlay">
+            <div id="controls-left">
+                <button id="fav-song" class="music-control-button">🤍</button>
+            </div>
+            <div id="main-info">
+                <img src="/img/noimage.jpg" alt="Album Cover" id="song-cover">
+                <span id="song-text-info">
+                    <p id="song-artist">?</p>
+                    <p>-</p>
+                    <p id="song-name">?</p>
+                </span>
+            </div>
+            
+            <div id="controls-right">
+                <button id="loop-song" class="music-control-button">🔁</button>
+            </div>
+        </div>
     </div>
 
     <div id="music-controls">
