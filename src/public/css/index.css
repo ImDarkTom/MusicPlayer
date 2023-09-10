@@ -141,7 +141,7 @@ div#bg-overlay {
     width: 100vw;
     height: 5%;
     position: absolute;
-    backdrop-filter: blur(50px);
+    backdrop-filter: blur(33vw);
     display: inline-flex;
     justify-content: center;
     border-radius: 1vw 1vw 0 0;
