@@ -34,39 +34,36 @@
         </div>
     </div>
 
-    <div id="music-info">
+    <div id="music-bar">
         <div id="bg-overlay">
-            <div id="controls-left">
-                <button id="fav-song" class="music-control-button">🤍</button>
+            <div id="song-info">
+                <img src="/img/noimage.jpg" id="bar-album-cover">
+                <div id="bar-song-info-text">
+                    <p id="bar-title">Lorem Ipsum</p>
+                    <p id="bar-artist">Dolor</p>
+                    </span>
+                </div>
             </div>
-            <div id="main-info">
-                <img src="/img/noimage.jpg" alt="Album Cover" id="song-cover">
-                <span id="song-text-info">
-                    <p id="song-artist">?</p>
-                    <p>-</p>
-                    <p id="song-name">?</p>
-                </span>
+            <div id="bar-controls">
+                <audio src="" id="playing"></audio>
+                <div id="button-controls">
+                    <button id="fav-song">🤍</button>
+                    <button id="play-pause">▶️</button>
+                    <button id="loop-song">🔁</button>
+                </div>
+                <div id="seek-container">
+                    <p id="audiocurrent">??:?</p>
+                    <input type="range"  id="seek-slider" max="0" value="0">
+                    <p id="audioduration">??:?</p>
+                </div>
             </div>
-            
-            <div id="controls-right">
-                <button id="loop-song" class="music-control-button">🔁</button>
+            <div id="volume-controls">
+                <button id="volume">🔊</button>
+                <input type="range" id="volume-slider" max="100" value="100">
             </div>
         </div>
     </div>
 
-    <div id="music-controls">
-        <audio src="" id="playing"></audio>
-        <button id="play-pause">▶</button>
-        <input type="range"  id="seek-slider" max="0" value="0">
-        <span id="audio-time">
-            <p id="audiocurrent">??:?</p>
-            <p> / </p>
-            <p id="audioduration">??:?</p>
-        </span>
-        <button id="volume" class="volume-controls">🔊</button>
-        <input type="range" id="volume-slider" class="volume-controls" max="100" value="100">
-        <p id="volume-text" class="volume-controls">100%</p>
-    </div>
     <template id="search-result-template">
         <li class="search-result">
             <img src="" class="result-album-cover">

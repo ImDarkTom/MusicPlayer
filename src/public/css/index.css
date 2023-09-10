@@ -20,151 +20,10 @@ body, html {
     overflow: hidden;
 }
 
-audio#playing {
-    width: 100vw;
-}
-
-div#music-controls {
-    display: flex;
-    width: 100vw;
-    height: 5vh;
-    background-color: var(--bar-bg);
-}
-
-div#music-controls>button:hover {
-    background-color: var(--bar-bg-hover);
-}
-
-input#seek-slider {
-    width: 100%;
-    height: 100%;
-    margin: 0 1vw;
-}
-
-button#play-pause {
-    height: 100%;
-    padding: 0;
-    aspect-ratio: 1/1;
-    font-size: 1.5rem;
-    background-color: transparent;
-    border: none;
-    color: var(--text-col);
-    cursor: pointer;
-}
-
-button#play-pause:hover {
-    color: var(--text-hover-col);
-}
-
-button#volume {
-    background-color: transparent;
-    border: none;
-    width: 5%;
-}
-
-span#audio-time {
-    color: var(--text-col);
-}
-
-span#audio-time>p {
-    margin-right: 0.5vw;
-}
-
-button#volume:hover {
-    cursor: pointer;
-}
-
-span#audio-time {
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
-p#volume-text {
-    color: var(--text-col);
-    height: 100%;
-    width: 7%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    margin: 0;
-}
-
-span#audio-time>p {
-    display: inline-block;
-}
+/* App */
 
 div#app-container {
     height: 90%;
-}
-
-div#music-info {
-    background-color: var(--bar-bg);
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    color: var(--text-col);
-    border-radius: 1vw 1vw 0 0;
-    height: 5%;
-    width: 100vw;
-}
-
-div#main-info {
-    width: 80vw;
-    display: inline-flex;
-    justify-content: center;
-    flex: 1;
-}
-
-.music-control-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0 1vw;
-    height: 100%;
-    width: 100%;
-    font-size: 1.2rem;
-    z-index: 1;
-}
-
-.music-control-button:hover {
-    transform: scale(1.1);
-    text-shadow: 0 0 10px black;
-}
-
-button#loop-song.enabled {
-    text-shadow: 0 0 20px black, 0 0 10px black;
-}
-
-div#bg-overlay {
-    width: 100vw;
-    height: 5%;
-    position: absolute;
-    backdrop-filter: blur(33vw);
-    display: inline-flex;
-    justify-content: center;
-    border-radius: 1vw 1vw 0 0;
-    box-shadow: 0 0 1px black inset;
-}
-
-span#song-text-info {
-    display: inline-flex;
-    text-overflow: ellipsis;
-    text-shadow: 0 0 0.5rem black, 0 0 0.75rem black, 0 0 1rem black;
-    user-select: none;
-}
-
-span#song-text-info>p {
-    margin: auto 0.25vw;
-}
-
-img#song-cover {
-    height: 4dvh;
-    margin: 0.5dvh;
-    border-radius: 10px;
-    box-shadow: 0 0 0.75rem black;
-    user-select: none;
 }
 
 button#menu {
@@ -356,6 +215,157 @@ li.song-list-card>p.title {
     margin: 0 0 0.5dvh 1vw;
 }
 
+
+/* Bottom Bar */
+div#music-bar {
+    width: 100vw;
+    height: 10dvh;
+    position: relative;
+    background-image: url("/img/noimage.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+div#bg-overlay {
+    backdrop-filter: blur(33vw);
+    display: inline-flex;
+}
+
+div#song-info {
+    display: inline-flex;
+    width: 33vw;
+}
+
+div#bar-song-info-text {
+    margin: auto 0 auto 1vw;
+    display: flex;
+    height: auto;
+    align-items: center;
+    flex-direction: column;
+    text-align: left;
+}
+
+div#bar-song-info-text p {
+    width: 100%;
+    color: var(--text-col);
+    text-shadow: 0 0 0.5rem black, 0 0 0.75rem black, 0 0 1rem black;
+    margin: 0;
+}
+
+p#bar-title {
+    font-weight: bold;
+}
+
+img#bar-album-cover {
+    height: 8dvh;
+    margin: 1vh;
+    box-shadow: 0 0 0.75rem black;
+    border-radius: 10%;
+}
+
+div#bar-controls {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 34vw;
+}
+
+div#button-controls {
+    width: 100%;
+    height: 5dvh;
+    display: flex;
+    justify-content: center;
+}
+
+div#button-controls button {
+    height: 100%;
+    padding: 0;
+    aspect-ratio: 1/1;
+    background-color: transparent;
+    border: none;
+    color: var(--text-col);
+    cursor: pointer;
+}
+
+div#button-controls button:hover {
+    color: var(--text-hover-col);
+    font-weight: bold;
+}
+
+div#button-controls button:not(#play-pause) {
+    font-size: 1rem;
+}
+
+button#play-pause {
+    font-size: 1.5rem;
+}
+
+div#seek-container {
+    width: 100%;
+    height: 5dvh;
+    display: inline-flex;
+}
+
+div#seek-container p {
+    color: var(--text-col);
+    text-shadow: 0 0 0.5rem black, 0 0 0.75rem black, 0 0 1rem black;
+    padding: 0 10px;
+}
+
+div#volume-controls {
+    width: 33vw;
+    display: inline-flex;
+    justify-content: right;
+}
+
+div#volume-controls button {
+    padding: 0;
+    width: 10%;
+    margin: 1%;
+    font-size: 1.1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+div#volume-controls button:hover {
+    font-weight: bold;
+}
+
+input#volume-slider {
+    margin-right: 1vh;
+}
+
+input#seek-slider {
+    width: 100%;
+    height: 100%;
+    margin: 0 1vw;
+}
+
+span#audio-time {
+    color: var(--text-col);
+}
+
+span#audio-time>p {
+    margin-right: 0.5vw;
+}
+
+span#audio-time {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+span#audio-time>p {
+    display: inline-block;
+}
+
+button#loop-song.enabled {
+    text-shadow: 0 0 20px black, 0 0 10px black;
+}
+
+/* General Styling */
 .horizontal-scroll-thin {
     scrollbar-width: thin;
 }
@@ -394,27 +404,6 @@ li.song-list-card>p.title {
 }
    
 @media (max-width: 800px) {
-    .volume-controls {
-        display: none !important;
-    }
-
-    button#loop-song {
-        width: 15%;
-    }
-
-    div#music-controls {
-        height: 8%;
-    }
-
-    div#app-container {
-        height: 87%;
-    }
-
-    span#audio-time {
-        width: 25%;
-        justify-content: center;
-    }
-
     li.search-result {
         height: 10dvh;
         margin-bottom: 2dvh;
@@ -449,5 +438,17 @@ li.song-list-card>p.title {
     div#top-bar {
         width: 100vw;
         display: block;
+    }
+
+    div#volume-controls {
+        display: none;
+    }
+
+    div#song-info {
+        width: 50vw;
+    }
+
+    div#bar-controls {
+        width: 50vw;
     }
 }

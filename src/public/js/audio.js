@@ -6,7 +6,6 @@ const playingAudio = select('audio#playing');
 const playPauseBtn = select('button#play-pause');
 
 const volumeSlider = select('input#volume-slider');
-const volumeText = select('p#volume-text');
 const volumeButton = select('button#volume');
 
 const seekSlider = select('input#seek-slider');
@@ -22,13 +21,11 @@ playingAudio.addEventListener('play', () => {
 });
 
 playingAudio.addEventListener('pause', () => {
-    playPauseBtn.textContent = "▶";
+    playPauseBtn.textContent = "▶️";
     navigator.mediaSession.playbackState = 'paused';
 });
 
 playingAudio.addEventListener('volumechange', () => {
-    volumeText.textContent = `${Math.round(playingAudio.volume * 100)}%`;
-
     if (playingAudio.muted || playingAudio.volume === 0.00) {
         volumeButton.textContent = "🔇";
     } else {
@@ -88,7 +85,6 @@ function calculateTime(secs) {
 };
 
 function setAudioVolume() {
-    volumeText.textContent = `${volumeSlider.value}%`;
     playingAudio.volume = (volumeSlider.value / 100);
 }
 
