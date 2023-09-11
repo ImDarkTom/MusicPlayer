@@ -1,3 +1,4 @@
-/music
+/music/*
 /node_modules
 /src/public/favicon.ico
+config.json

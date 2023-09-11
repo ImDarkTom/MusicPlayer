@@ -4,8 +4,10 @@ const path = require('path');
 const fs = require('fs');
 const ID3 = require('node-id3');
 
+const config = require('../config.json');
+
 const app = express();
-const port = 3000;
+const port = config.port;
 
 const acceptedFileTypes = [".mp3", ".wav", ".ogg", ".aac"];
 
@@ -112,7 +114,7 @@ app.get("/api/recents", (req, res) => {
                 fs.statSync(path.join(dir, b)).mtime.getTime();
         });
 
-        const latestFiles = files.slice(-15);
+        const latestFiles = files.slice(config.maxRecents * -1);
 
         let songDetails = [];
         let fileNames = [];
