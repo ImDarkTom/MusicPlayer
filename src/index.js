@@ -2,7 +2,6 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-
 const ID3 = require('node-id3');
 
 const app = express();
@@ -12,18 +11,14 @@ const acceptedFileTypes = [".mp3", ".wav", ".ogg", ".aac"];
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-function loadFileMetadata(fileName) {
+function getMetadata(fileName, excludeImage = true, excludeRaw = true) {
     const filePath = path.join(__dirname, '..', 'music', fileName);
 
     if (!fs.existsSync(filePath)) {
         return -1;
     }
 
-    return ID3.read(filePath);
-}
-
-function optimiseFileMetadata(fileName) {
-    const metadata = loadFileMetadata(fileName);
+    const metadata = ID3.read(filePath);
 
     if (metadata === -1) {
         return -1;
@@ -41,19 +36,19 @@ function optimiseFileMetadata(fileName) {
         metadata.album = "Unknown Album";
     }
 
-    if (metadata.image) {
+    if (metadata.image && excludeImage) {
         metadata.image = "";
     }
 
-    if (metadata.raw) {
+    if (metadata.raw && excludeRaw) {
         metadata.raw = "";
     }
 
     return metadata;
 }
 
-app.get('/details/:fileName', async (req, res) => {
-    const metadata = optimiseFileMetadata(req.params.fileName);
+app.get('/details/:fileName', (req, res) => {
+    const metadata = getMetadata(req.params.fileName);
 
     if (metadata === -1) {
         res.status(404);
@@ -62,8 +57,8 @@ app.get('/details/:fileName', async (req, res) => {
     res.json(metadata);
 });
 
-app.get('/details/:fileName/image', async (req, res) => {
-    const rawMetadata = loadFileMetadata(req.params.fileName);
+app.get('/details/:fileName/image', (req, res) => {
+    const rawMetadata = getMetadata(req.params.fileName, false);
 
     if (!rawMetadata.image) {
         res.redirect('/img/placeholder-cover.jpg');
@@ -74,7 +69,7 @@ app.get('/details/:fileName/image', async (req, res) => {
     res.send(rawMetadata.image.imageBuffer);
 });
 
-app.get('/song/:fileName', async (req, res) => {
+app.get('/song/:fileName', (req, res) => {
     const filePath = path.join(__dirname, '..', 'music', req.params.fileName);
 
     if (!fs.existsSync(filePath)) {
@@ -93,10 +88,10 @@ app.get("/search", (req, res) => {
     let fileNames = [];
 
     for (const file of files) {
-        const tags = ID3.read(path.join(__dirname, '..', 'music', file));
+        const tags = getMetadata(file);
 
-        const title = tags.title ? tags.title : file;
-        const artist = tags.artist ? tags.artist : "Unknown Artist";
+        const title = tags.title;
+        const artist = tags.artist;
 
         if (`${artist} ${title}`.toLowerCase().includes(query)) {
             songDetails.push({title: title, artist: artist});
@@ -110,23 +105,22 @@ app.get("/search", (req, res) => {
 app.get("/api/recents", (req, res) => {
     try {
         const dir = path.join(__dirname, '..', 'music');
-        const files = fs.readdirSync(dir).filter(file => acceptedFileTypes.includes(path.extname(file).toLowerCase()));
+        const files = fs.readdirSync(dir).filter( file => acceptedFileTypes.includes(path.extname(file).toLowerCase()) );
 
         files.sort(function (a, b) {
             return fs.statSync(path.join(dir, a)).mtime.getTime() -
                 fs.statSync(path.join(dir, b)).mtime.getTime();
         });
 
+        const latestFiles = files.slice(-15);
+
         let songDetails = [];
         let fileNames = [];
 
-        for (const file of files) {
-            const tags = ID3.read(path.join(__dirname, '..', 'music', file));
+        for (const file of latestFiles) {
+            const tags = getMetadata(file);
 
-            const title = tags.title ? tags.title : file;
-            const artist = tags.artist ? tags.artist : "Unknown Artist";
-
-            songDetails.push({ title: title, artist: artist });
+            songDetails.push({ title: tags.title, artist: tags.artist });
             fileNames.push(file);
         }
 
