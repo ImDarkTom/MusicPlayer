@@ -66,7 +66,7 @@ app.get('/details/:fileName/image', async (req, res) => {
     const rawMetadata = loadFileMetadata(req.params.fileName);
 
     if (!rawMetadata.image) {
-        res.redirect('/img/noimage.jpg');
+        res.redirect('/img/placeholder-cover.jpg');
         return;
     }
 

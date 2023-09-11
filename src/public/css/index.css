@@ -221,7 +221,7 @@ div#music-bar {
     width: 100vw;
     height: 10dvh;
     position: relative;
-    background-image: url("/img/noimage.jpg");
+    background-image: url("/img/placeholder-cover.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: 100%;
