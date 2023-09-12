@@ -24,6 +24,8 @@ const dropdownList = select('ul#dropdown-menu');
 const uploadBtn = select('li#upload-btn');
 const uploadMenuBg = select('div#upload-background');
 
+const shareSongBtn = document.querySelector('li#share-song');
+
 //Listeners
 favBtn.addEventListener('click', () => {
     const playingSong = playingAudio.dataset.filename;
@@ -72,6 +74,39 @@ uploadMenuBg.addEventListener('click', (e) => {
     if (e.target.id = "upload-background") { 
         uploadMenuBg.style.display = "none";
     }
+});
+
+shareSongBtn.addEventListener('click', () => {
+    const playingSongFile = playingAudio.dataset.filename;
+
+    if (!playingSongFile) {
+        alert("You are not currently playing anything.")
+        return;
+    }
+
+    const textToCopy = `${window.location.origin}?track=${btoa(playingSongFile)}`;
+
+    navigator.clipboard.writeText(textToCopy)
+        .then(() => {
+            alert('Song URL copied to clipboard: ' + textToCopy);
+        })
+        .catch(err => {
+            console.error("Could not copy text resorting to fallback.", err)
+
+            const textarea = document.createElement('textarea');
+            textarea.value = textToCopy;
+
+            document.body.appendChild(textarea);
+
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+
+            document.execCommand('copy');
+
+            document.body.removeChild(textarea);
+
+            alert('Text has been copied to the clipboard: ' + textToCopy);
+        });
 });
 
 
