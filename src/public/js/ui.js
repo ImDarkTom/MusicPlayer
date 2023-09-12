@@ -1,5 +1,6 @@
 import * as mainModule from './app.js'
 import * as audioModule from './audio.js'
+import * as icons from './icons.js'
 
 // Selectors
 const select = (selector) => document.querySelector(selector);
@@ -33,7 +34,7 @@ favBtn.addEventListener('click', () => {
 
         localStorage.setItem('favourites', JSON.stringify(updatedFavs));
 
-        favBtn.textContent = "🤍";
+        favBtn.innerHTML = icons.heartOutline;
         return;
     }
 
@@ -41,7 +42,7 @@ favBtn.addEventListener('click', () => {
 
     localStorage.setItem('favourites', JSON.stringify(favsList));
 
-    favBtn.textContent = "❤️";
+    favBtn.innerHTML = icons.heartFilled;
 });
 
 loopBtn.addEventListener('click', () => {
@@ -84,9 +85,9 @@ async function loadSongMetaData(fileName) {
     const imagePath = `/details/${fileName}/image`;
 
     if (favsList.includes(fileName)) {
-        favBtn.textContent = "❤️";
+        favBtn.innerHTML = icons.heartFilled;;
     } else {
-        favBtn.textContent = "🤍";
+        favBtn.innerHTML = icons.heartOutline;;
     }
     
     songCover.src = imagePath;

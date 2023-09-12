@@ -1,4 +1,5 @@
 import * as uiModule from './ui.js'
+import * as icons from './icons.js'
 
 // Selectors
 const select = (selector) => document.querySelector(selector);
@@ -16,12 +17,12 @@ const audioCurrent = select('p#audiocurrent');
 
 //Listeners
 playingAudio.addEventListener('play', () => {
-    playPauseBtn.textContent = "⏸";
+    playPauseBtn.innerHTML = icons.pause;
     navigator.mediaSession.playbackState = 'playing';
 });
 
 playingAudio.addEventListener('pause', () => {
-    playPauseBtn.textContent = "▶️";
+    playPauseBtn.innerHTML = icons.play;
     navigator.mediaSession.playbackState = 'paused';
 });
 

@@ -297,8 +297,19 @@ div#button-controls button:not(#play-pause) {
     font-size: 1rem;
 }
 
+div#button-controls button:not(#play-pause) svg {
+    width: 50%;
+    height: 50%;
+}
+
+
 button#play-pause {
     font-size: 1.5rem;
+}
+
+button#play-pause svg {
+    height: 100%;
+    width: 100%;
 }
 
 div#seek-container {
@@ -331,6 +342,11 @@ div#volume-controls button {
 
 div#volume-controls button:hover {
     font-weight: bold;
+}
+
+div#volume-controls button svg {
+    width: 40%;
+    height: auto;
 }
 
 input#volume-slider {
