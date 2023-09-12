@@ -86,27 +86,33 @@ shareSongBtn.addEventListener('click', () => {
 
     const textToCopy = `${window.location.origin}?track=${btoa(playingSongFile)}`;
 
-    navigator.clipboard.writeText(textToCopy)
+    if (navigator.clipboard) {
+
+        navigator.clipboard.writeText(textToCopy)
         .then(() => {
             alert('Song URL copied to clipboard: ' + textToCopy);
         })
         .catch(err => {
-            console.error("Could not copy text resorting to fallback.", err)
-
-            const textarea = document.createElement('textarea');
-            textarea.value = textToCopy;
-
-            document.body.appendChild(textarea);
-
-            textarea.select();
-            textarea.setSelectionRange(0, 99999);
-
-            document.execCommand('copy');
-
-            document.body.removeChild(textarea);
-
-            alert('Text has been copied to the clipboard: ' + textToCopy);
+            console.error("Could not copy text", err)
         });
+
+    } else {
+
+        const textarea = document.createElement('textarea');
+        textarea.value = textToCopy;
+
+        document.body.appendChild(textarea);
+
+        textarea.select();
+        textarea.setSelectionRange(0, 99999);
+
+        document.execCommand('copy');
+
+        document.body.removeChild(textarea);
+
+        alert('Song URL copied to clipboard: ' + textToCopy);
+    }
+    
 });
 
 
