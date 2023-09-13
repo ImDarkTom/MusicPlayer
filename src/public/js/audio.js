@@ -14,16 +14,21 @@ const audioDuration = select("p#audioduration");
 
 const audioCurrent = select('p#audiocurrent');
 
+const hasMediaSession = navigator.mediaSession == undefined ? false : true;
 
 //Listeners
 playingAudio.addEventListener('play', () => {
     playPauseBtn.innerHTML = icons.pause;
-    navigator.mediaSession.playbackState = 'playing';
+    if (hasMediaSession) {
+        navigator.mediaSession.playbackState = 'playing';
+    }
 });
 
 playingAudio.addEventListener('pause', () => {
     playPauseBtn.innerHTML = icons.play;
-    navigator.mediaSession.playbackState = 'paused';
+    if (hasMediaSession) {
+        navigator.mediaSession.playbackState = 'paused';
+    }
 });
 
 playingAudio.addEventListener('volumechange', () => {
@@ -35,18 +40,22 @@ playingAudio.addEventListener('volumechange', () => {
 });
 
 playingAudio.addEventListener('ended', function () {
-    navigator.mediaSession.playbackState = 'none';
+    if (hasMediaSession) {
+        navigator.mediaSession.playbackState = 'none';
+    }
 });
 
 playingAudio.addEventListener('timeupdate', () => {
     seekSlider.value = Math.round(playingAudio.currentTime);
     audioCurrent.textContent = calculateTime(seekSlider.value)
 
-    navigator.mediaSession.setPositionState({
-        duration: seekSlider.max,
-        playbackRate: playingAudio.playbackRate,
-        position: Math.round(playingAudio.currentTime)
-    });
+    if (hasMediaSession) {
+        navigator.mediaSession.setPositionState({
+            duration: seekSlider.max,
+            playbackRate: playingAudio.playbackRate,
+            position: Math.round(playingAudio.currentTime)
+        });
+    }
 });
 
 playingAudio.addEventListener('loadedmetadata', () => {

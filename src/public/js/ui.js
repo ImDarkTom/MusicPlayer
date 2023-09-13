@@ -135,17 +135,20 @@ async function loadSongMetaData(fileName) {
     artistText.textContent = data.artist;
     songNameText.textContent = data.title;
 
-    navigator.mediaSession.metadata = new MediaMetadata({
-        title: data.title,
-        artist: data.artist,
-        album: data.album,
-        artwork: [
-            {
-                src: imagePath,
-                type: "image/jpeg"
-            }
-        ]
-    });
+    if (navigator.mediaSession != undefined) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: data.title,
+            artist: data.artist,
+            album: data.album,
+            artwork: [
+                {
+                    src: imagePath,
+                    type: "image/jpeg"
+                }
+            ]
+        });
+    }
+    
 
     musicInfoBox.style["background-image"] = `url("${imagePath}")`;
 }

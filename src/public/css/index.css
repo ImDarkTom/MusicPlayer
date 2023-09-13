@@ -1,11 +1,9 @@
 :root {
-    --text-col: #ffffff;
+    --text-col: #000000;
     --text-hover-col: #eeeeee;
-    --bar-bg: #808080;
-    --bar-bg-hover: #5f5f5f;
+    --dropdown-bg-hover: #5f5f5f;
     --main-bg-col: #eeeeee;
     --card-color: #c1c1c1;
-    --dropdown-bg: #141414;
     --darken-40: rgba(0, 0, 0, 0.4);
     --card-width: clamp(150px, 18vw, 180px);
 }
@@ -47,7 +45,7 @@ ul#dropdown-menu {
     display: none;
     width: 20vw;
     margin: 0;
-    color: white;
+    color: var(--text-col);
     list-style: none;
     position: absolute;
     top: 1.8rem;
@@ -55,13 +53,13 @@ ul#dropdown-menu {
 }
 
 ul#dropdown-menu>li {
-    background-color: var(--dropdown-bg);
+    background-color: var(--darken-40);
     padding: 0.5rem 1vw;
 }
 
 ul#dropdown-menu>li:hover {
     cursor: pointer;
-    background-color: var(--bar-bg-hover);
+    background-color: var(--dropdown-bg-hover);
 }
 
 iframe#upload-frame {
@@ -156,7 +154,7 @@ div.horizontal-song-list {
 }
 
 div.horizontal-song-list>h2 {
-    color: white;
+    color: var(--text-col);
     user-select: none;
     margin: 0;
 }
@@ -248,7 +246,7 @@ div#bar-song-info-text {
 
 div#bar-song-info-text p {
     width: 100%;
-    color: var(--text-col);
+    color: white;
     text-shadow: 0 0 0.5rem black, 0 0 0.75rem black, 0 0 1rem black;
     margin: 0;
 }
@@ -284,7 +282,7 @@ div#button-controls button {
     aspect-ratio: 1/1;
     background-color: transparent;
     border: none;
-    color: var(--text-col);
+    color: white;
     cursor: pointer;
 }
 
@@ -319,7 +317,7 @@ div#seek-container {
 }
 
 div#seek-container p {
-    color: var(--text-col);
+    color: white;
     text-shadow: 0 0 0.5rem black, 0 0 0.75rem black, 0 0 1rem black;
     padding: 0 10px;
 }
@@ -416,6 +414,8 @@ button#loop-song.enabled {
         --bar-bg-hover: #5f5f5f;
         --main-bg-col: #222222;
         --card-color: #181818;
+        --dropdown-bg: #141414;
+        --darken-40: rgba(0, 0, 0, 0.4);
     }
 }
    
