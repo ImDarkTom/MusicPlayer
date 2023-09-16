@@ -6,6 +6,7 @@
     --card-color: #c1c1c1;
     --darken-40: rgba(0, 0, 0, 0.4);
     --card-width: clamp(150px, 18vw, 180px);
+    --shadow-10: 0 0 10px black;
 }
 
 body, html {
@@ -216,13 +217,16 @@ li.song-list-card>p.title {
 
 /* Bottom Bar */
 div#music-bar {
+    display: flex;
     width: 100vw;
     height: 10dvh;
     position: relative;
     background-image: url("/img/placeholder-cover.jpg");
     background-position: center;
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: cover;
+    top: 0;
+    transition: height 0.3s ease;
 }
 
 div#bg-overlay {
@@ -256,8 +260,9 @@ p#bar-title {
 }
 
 img#bar-album-cover {
+    cursor: pointer;
     height: 8dvh;
-    margin: 1vh;
+    margin: 1dvh;
     box-shadow: 0 0 0.75rem black;
     border-radius: 10%;
 }
@@ -289,6 +294,10 @@ div#button-controls button {
 div#button-controls button:hover {
     color: var(--text-hover-col);
     font-weight: bold;
+}
+
+div#button-controls > button > svg {
+    filter: drop-shadow(var(--shadow-10));
 }
 
 div#button-controls button:not(#play-pause) {
@@ -330,7 +339,8 @@ div#volume-controls {
 
 div#volume-controls button {
     padding: 0;
-    width: 10%;
+    width: 4ch;
+    text-shadow: var(--shadow-10);
     margin: 1%;
     font-size: 1.1rem;
     background: none;
@@ -348,7 +358,8 @@ div#volume-controls button svg {
 }
 
 input#volume-slider {
-    margin-right: 1vh;
+    margin-right: 1dvh;
+    box-shadow: var(--shadow-10);
 }
 
 input#seek-slider {
@@ -373,10 +384,6 @@ span#audio-time {
 
 span#audio-time>p {
     display: inline-block;
-}
-
-button#loop-song.enabled {
-    text-shadow: 0 0 20px black, 0 0 10px black;
 }
 
 /* General Styling */
@@ -404,6 +411,51 @@ button#loop-song.enabled {
 .vertical-scroll-thin::-webkit-scrollbar-thumb {
     background-color: #888;
     border-radius: 1rem;
+}
+
+/* Fullscreen */
+.fullscreen-info {
+    z-index: 5;
+    position: absolute !important;
+    height: 100dvh !important;
+}
+
+.fullscreen-info div#bg-overlay {
+    display: block;
+    width: 100vw;
+}
+
+.fullscreen-info div#song-info {
+    height: 50dvh;
+    width: 100vw;
+    display: block;
+}
+
+.fullscreen-info img#bar-album-cover {
+    height: 33dvh;
+    margin: 10dvh auto 2dvh auto;
+    display: block;
+}
+
+.fullscreen-info div#bar-song-info-text {
+    margin: 0 auto;
+    text-align: center;
+    width: 100vw;
+}
+
+.fullscreen-info div#volume-controls {
+    width: 100vw;
+    justify-content: center;
+    margin: 2dvh auto;
+}
+
+.fullscreen-info div#bar-controls {
+    width: 100vw;
+}
+
+.fullscreen-info div#seek-container {
+    width: clamp(300px, 100vw, 800px);
+    margin: 0 auto;
 }
 
 @media (prefers-color-scheme: dark) {

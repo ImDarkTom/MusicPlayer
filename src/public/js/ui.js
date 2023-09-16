@@ -6,7 +6,10 @@ import * as icons from './icons.js'
 const select = (selector) => document.querySelector(selector);
 const playingAudio = select('audio#playing');
 
-const musicInfoBox = select('div#music-bar')
+const musicBar = select('div#music-bar')
+const musicBarOverlay = select('div#bg-overlay');
+const songInfoContainer = select('div#song-info');
+
 const songCover = select('img#bar-album-cover');
 const artistText = select('p#bar-artist');
 const songNameText = select('p#bar-title');
@@ -150,7 +153,7 @@ async function loadSongMetaData(fileName) {
     }
     
 
-    musicInfoBox.style["background-image"] = `url("${imagePath}")`;
+    musicBar.style["background-image"] = `url("${imagePath}")`;
 }
 
 async function loadSuggested() {
@@ -199,6 +202,10 @@ async function loadSuggested() {
         recentUploadsList.appendChild(clone);
     }
 }
+
+songCover.addEventListener('click', () => {
+    musicBar.classList.toggle('fullscreen-info');
+});
 
 export {
     loadSongMetaData,
