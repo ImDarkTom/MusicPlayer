@@ -203,8 +203,16 @@ async function loadSuggested() {
     }
 }
 
-songCover.addEventListener('click', () => {
-    musicBar.classList.toggle('fullscreen-info');
+songCover.addEventListener('click', async () => {
+    if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        musicBar.classList.toggle('fullscreen-info');
+        return;
+    }
+
+    document.startViewTransition(() => {
+        musicBar.classList.toggle('fullscreen-info');
+    });
+    
 });
 
 export {

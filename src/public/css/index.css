@@ -226,7 +226,6 @@ div#music-bar {
     background-repeat: no-repeat;
     background-size: cover;
     top: 0;
-    transition: height 0.3s ease;
 }
 
 div#bg-overlay {
@@ -265,6 +264,9 @@ img#bar-album-cover {
     margin: 1dvh;
     box-shadow: 0 0 0.75rem black;
     border-radius: 10%;
+    contain: paint;
+    user-select: none;
+    view-transition-name: scale-album-cover;
 }
 
 div#bar-controls {
