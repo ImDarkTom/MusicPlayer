@@ -137,6 +137,7 @@ async function loadSongMetaData(fileName) {
     songCover.src = imagePath;
     artistText.textContent = data.artist;
     songNameText.textContent = data.title;
+    document.title = `${data.title} | Music Player`
 
     if (navigator.mediaSession != undefined) {
         navigator.mediaSession.metadata = new MediaMetadata({
