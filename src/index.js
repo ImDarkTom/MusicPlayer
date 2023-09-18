@@ -68,6 +68,8 @@ app.get('/details/:fileName/image', (req, res) => {
     }
 
     res.setHeader('Content-Type', 'image/jpeg');
+    res.setHeader('Content-Length', rawMetadata.image.imageBuffer.length);
+    
     res.send(rawMetadata.image.imageBuffer);
 });
 

@@ -360,8 +360,9 @@ div#volume-controls button svg {
 }
 
 input#volume-slider {
-    margin-right: 1dvh;
     box-shadow: var(--shadow-10);
+    display: flex;
+    margin: auto 1dvh;
 }
 
 input#seek-slider {
