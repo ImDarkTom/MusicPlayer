@@ -1,5 +1,5 @@
 import * as icons from '../icons.js'
-import * as storageModule from '../utils/storage.js'
+import { getFavsList } from '../utils/storage.js'
 
 // Selectors
 const select = (selector) => document.querySelector(selector);
@@ -31,7 +31,7 @@ const hasMediaSession = navigator.mediaSession == undefined ? false : true;
 //audio bar
 favBtn.addEventListener('click', () => {
     const playingSong = playingAudio.dataset.filename;
-    const favsList = storageModule.getFavsList();
+    const favsList = getFavsList();
 
     if (favsList.includes(playingSong)) {
         const updatedFavs = favsList.filter(item => item !== playingSong);
@@ -151,7 +151,7 @@ function playSong(fileName) {
 }
 
 async function loadSongMetaData(fileName) {
-    const favsList = storageModule.getFavsList();
+    const favsList = getFavsList();
 
     const response = await fetch(`/details/${fileName}`);
     const data = await response.json();

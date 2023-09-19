@@ -1,4 +1,4 @@
-import * as audioModule from './audio.js'
+import { playSong } from './audio.js'
 
 // Selectors
 const select = (selector) => document.querySelector(selector);
@@ -115,7 +115,7 @@ async function listSongResults(query) {
     for (const index in files) {
         const clone = searchResultTemplate.content.cloneNode(true);
 
-        clone.querySelector('li').onclick = function() {audioModule.playSong(files[index]);};
+        clone.querySelector('li').onclick = function() {playSong(files[index]);};
         clone.querySelector('p.result-song-title').textContent = songDetails[index].title;
         clone.querySelector('p.result-song-artist').textContent = songDetails[index].artist;
         clone.querySelector('img').src = `/details/${files[index]}/image`;
