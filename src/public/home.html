@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <script type="module" src="js/home/home.js"></script>
+    <link rel="stylesheet" href="css/root.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div id="recent-uploads-container" class="horizontal-song-list">
+        <h2>Recent Uploads</h2>
+        <ul id="recent-uploads" class="song-list horizontal-scroll-thin"></ul>
+    </div>
+    <div id="favs-list-container" class="horizontal-song-list">
+        <h2>Favourites</h2>
+        <ul id="fav-songs" class="song-list horizontal-scroll-thin"></ul>
+    </div>
+    <template id="song-list-card-template">
+        <li class="song-list-card">
+            <img src="">
+            <p class="title"></p>
+            <p class="artist"></p>
+        </li>
+    </template>
+</body>
+</html>

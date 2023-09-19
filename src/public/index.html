@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Music Player</title>
     <script type="module" src="js/app.js" defer></script>
+    <link rel="stylesheet" href="css/root.css">
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-
     <div id="app-container">
         <div id="top-bar">
             <input type="text" id="search" placeholder="Search..." autocomplete="off">
@@ -24,14 +24,7 @@
             <iframe src="/upload.html" frameborder="0" id="upload-frame"></iframe>
         </div>
         <ul id="search-results" class="vertical-scroll-thin"></ul>
-        <div id="recent-uploads-container" class="horizontal-song-list">
-            <h2>Recent Uploads</h2>
-            <ul id="recent-uploads" class="song-list horizontal-scroll-thin"></ul>
-        </div>
-        <div id="favs-list-container" class="horizontal-song-list">
-            <h2>Favourites</h2>
-            <ul id="fav-songs" class="song-list horizontal-scroll-thin"></ul>
-        </div>
+        <iframe src="home.html" frameborder="0" id="main-window"></iframe>
     </div>
 
     <div id="music-bar">
@@ -71,13 +64,6 @@
                 <p class="result-song-title"></p>
                 <p class="result-song-artist"></p>
             </div>
-        </li>
-    </template>
-    <template id="song-list-card-template">
-        <li class="song-list-card">
-            <img src="">
-            <p class="title"></p>
-            <p class="artist"></p>
         </li>
     </template>
 </body>   

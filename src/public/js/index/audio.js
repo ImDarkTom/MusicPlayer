@@ -1,9 +1,20 @@
-import * as uiModule from './ui.js'
-import * as icons from './icons.js'
+import * as icons from '../icons.js'
+import * as storageModule from '../utils/storage.js'
 
 // Selectors
 const select = (selector) => document.querySelector(selector);
 const playingAudio = select('audio#playing');
+
+const musicBar = select('div#music-bar')
+
+const songCover = select('img#bar-album-cover');
+const artistText = select('p#bar-artist');
+const songNameText = select('p#bar-title');
+
+const loopBtn = select('button#loop-song');
+const favBtn = select('button#fav-song');
+
+
 const playPauseBtn = select('button#play-pause');
 
 const volumeSlider = select('input#volume-slider');
@@ -17,6 +28,40 @@ const audioCurrent = select('p#audiocurrent');
 const hasMediaSession = navigator.mediaSession == undefined ? false : true;
 
 //Listeners
+//audio bar
+favBtn.addEventListener('click', () => {
+    const playingSong = playingAudio.dataset.filename;
+    const favsList = storageModule.getFavsList();
+
+    if (favsList.includes(playingSong)) {
+        const updatedFavs = favsList.filter(item => item !== playingSong);
+
+        localStorage.setItem('favourites', JSON.stringify(updatedFavs));
+
+        favBtn.innerHTML = icons.heartOutline;
+        return;
+    }
+
+    favsList.unshift(playingAudio.dataset.filename);
+
+    localStorage.setItem('favourites', JSON.stringify(favsList));
+
+    favBtn.innerHTML = icons.heartFilled;
+});
+
+
+loopBtn.addEventListener('click', () => {
+    if (playingAudio.loop) {
+        playingAudio.loop = false;
+        loopBtn.classList.remove('enabled');
+    } else {
+        playingAudio.loop = true;
+        loopBtn.classList.add('enabled');
+    }
+});
+
+
+//other
 playingAudio.addEventListener('play', () => {
     playPauseBtn.innerHTML = icons.pause;
     if (hasMediaSession) {
@@ -102,8 +147,57 @@ function playSong(fileName) {
     playingAudio.src = "/song/" + fileName;
     playingAudio.dataset.filename = fileName;
     playingAudio.play();
-    uiModule.loadSongMetaData(fileName);
+    loadSongMetaData(fileName);
 }
+
+async function loadSongMetaData(fileName) {
+    const favsList = storageModule.getFavsList();
+
+    const response = await fetch(`/details/${fileName}`);
+    const data = await response.json();
+
+    const imagePath = `/details/${fileName}/image`;
+
+    if (favsList.includes(fileName)) {
+        favBtn.innerHTML = icons.heartFilled;;
+    } else {
+        favBtn.innerHTML = icons.heartOutline;;
+    }
+    
+    songCover.src = imagePath;
+    artistText.textContent = data.artist;
+    songNameText.textContent = data.title;
+    document.title = `${data.title} | Music Player`
+
+    if (navigator.mediaSession != undefined) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: data.title,
+            artist: data.artist,
+            album: data.album,
+            artwork: [
+                {
+                    src: imagePath,
+                    type: "image/jpeg"
+                }
+            ]
+        });
+    }
+    
+
+    musicBar.style["background-image"] = `url("${imagePath}")`;
+}
+
+songCover.addEventListener('click', async () => {
+    if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        musicBar.classList.toggle('fullscreen-info');
+        return;
+    }
+
+    document.startViewTransition(() => {
+        musicBar.classList.toggle('fullscreen-info');
+    });
+    
+});
 
 export {
     playSong,
