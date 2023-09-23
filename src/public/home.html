@@ -9,19 +9,29 @@
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-    <div id="recent-uploads-container" class="horizontal-song-list">
-        <h2>Recent Uploads</h2>
-        <ul id="recent-uploads" class="song-list horizontal-scroll-thin"></ul>
-    </div>
     <div id="favs-list-container" class="horizontal-song-list">
         <h2>Favourites</h2>
         <ul id="fav-songs" class="song-list horizontal-scroll-thin"></ul>
+    </div>
+    <div id="playlists-container" class="horizontal-song-list">
+        <h2>Your Playlists</h2>
+        <ul id="playlists-list" class="song-list horizontal-scroll-thin"></ul>
+    </div>
+    <div id="recent-uploads-container" class="horizontal-song-list">
+        <h2>Recent Uploads</h2>
+        <ul id="recent-uploads" class="song-list horizontal-scroll-thin"></ul>
     </div>
     <template id="song-list-card-template">
         <li class="song-list-card">
             <img src="">
             <p class="title"></p>
             <p class="artist"></p>
+        </li>
+    </template>
+    <template id="playlist-card-template">
+        <li class="song-list-card">
+            <img src="">
+            <p class="title"></p>
         </li>
     </template>
 </body>

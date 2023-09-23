@@ -1,9 +1,12 @@
 import { sendMessage } from "../utils/sendPostMessage.js";
+import { getPlayLists } from "../utils/storage.js";
 
 const select = (selector) => document.querySelector(selector);
 const songListCardTemplate = select('template#song-list-card-template');
+const playlistCardTemplate = select('template#playlist-card-template');
 const recentUploadsList = select('ul#recent-uploads');
 const favsSongsList = select('ul#fav-songs');
+const playlistsList = select('ul#playlists-list');
 
 function getFavsList() {
     const favs = localStorage.getItem('favourites');
@@ -33,6 +36,34 @@ async function loadSuggested() {
 
         favsSongsList.appendChild(clone);
     }
+
+    //Playlists
+    const playlists = getPlayLists();
+
+    for (const playlist of playlists) {
+        const clone = playlistCardTemplate.content.cloneNode(true);
+        
+        const title = playlist.name;
+        const id = playlist.id;
+
+        const baseElement = clone.querySelector('li');
+
+        baseElement.onclick = function() { sendMessage(["LOAD_WINDOW", {page: "playlist", data: id}]); };
+        clone.querySelector('p.title').textContent = title;
+        clone.querySelector('img').src = `/img/placeholder-cover.jpg`;
+
+        playlistsList.appendChild(clone);
+    }
+
+    const clone = playlistCardTemplate.content.cloneNode(true);
+
+    const baseElement = clone.querySelector('li');
+
+    baseElement.onclick = function () { sendMessage(["CREATE_PLAYLIST", null]); };
+    clone.querySelector('p.title').textContent = "Create a new playlist";
+    clone.querySelector('img').src = `/img/placeholder-cover.jpg`;
+
+    playlistsList.appendChild(clone);
 
     //Recents
     const response = await fetch(`/api/recents`);

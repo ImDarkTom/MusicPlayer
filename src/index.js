@@ -3,6 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const ID3 = require('node-id3');
+const { getAudioDurationInSeconds } = require('get-audio-duration')
 
 const config = require('../config.json');
 
@@ -30,14 +31,6 @@ function getMetadata(fileName, excludeImage = true, excludeRaw = true) {
         metadata.title = fileName;
     }
 
-    if (!metadata.artist) {
-        metadata.artist = "Unknown Artist";
-    }
-
-    if (!metadata.album) {
-        metadata.album = "Unknown Album";
-    }
-
     if (metadata.image && excludeImage) {
         metadata.image = "";
     }
@@ -48,6 +41,50 @@ function getMetadata(fileName, excludeImage = true, excludeRaw = true) {
 
     return metadata;
 }
+
+async function processMetadata(fileName) {
+    const filePath = path.join(__dirname, '..', 'music', fileName);
+
+    const tags = ID3.read(filePath);
+
+    const duration = await getAudioDurationInSeconds(filePath);
+
+    tags.comment = [{ language: 'eng', text: String(calculateTime(Math.round(duration))) }];
+
+    if (!tags.artist) {
+        tags.artist = "Unknown Artist";
+    }
+
+    if (!tags.album) {
+        tags.album = "Unknown Album";
+    }
+
+    const success = NodeID3.write(tags, fileName);
+
+    return success;
+}
+
+function getPlaylists() {
+    const filePath = path.join(__dirname, '..', 'data', 'playlists.json');
+
+    const fileData = fs.readFileSync(filePath);
+    const playlistData = JSON.parse(fileData);
+
+    return playlistData;
+}
+
+function updatePlaylists(json) {
+    fs.writeFileSync(path.join(__dirname, '..', 'data', 'playlists.json'), JSON.stringify(json));
+    return;
+}
+
+function calculateTime(secs) {
+    const minutes = Math.floor(secs / 60);
+    const seconds = Math.round(secs % 60);
+    const returnedSecs = seconds < 10 ? `0${seconds}` : seconds;
+
+    return `${minutes}:${returnedSecs}`;
+};
 
 app.get('/details/:fileName', (req, res) => {
     const metadata = getMetadata(req.params.fileName);
@@ -135,6 +172,96 @@ app.get("/api/recents", (req, res) => {
     }
 });
 
+//Playlist
+app.get('/api/playlist/:id', (req, res) => {
+    const id = req.params.id;
+
+    const playlists = getPlaylists();
+
+    if (playlists[id] == undefined) {
+        res.status(404);
+        return;
+    } 
+
+    const playlist = playlists[id];
+    playlist["password"] = undefined;
+
+    res.json(playlists[id]);
+});
+
+app.get('/api/playlist_create', (req, res) => {
+    const title = req.query.title;
+    const password = req.query.password;
+
+    if (!title || !password) {
+        return res.status(400);
+    }
+
+    const timeMs = Date.now();
+
+    const playlists = getPlaylists();
+
+    playlists[timeMs] = {
+        password: password,
+        metadata: {
+            title: title
+        },
+        items: []
+    };
+
+    updatePlaylists(playlists);
+
+    res.status(200).json({status: 'OK', id: timeMs});
+});
+
+app.get('/api/playlist/:id/edit', (req, res) => {
+    const id = req.params.id;
+    const action = req.query.action;
+    const password = req.query.password;
+
+    if (!action) {
+        return res.status(400);
+    }
+
+    const playlists = getPlaylists();
+
+    if (playlists[id] == undefined) {
+        return res.status(404);
+    } 
+
+    if (playlists[id].password != password) {
+        return res.status(401);
+    }
+
+
+    if (action == "ADD_SONG") {
+        const fileName = req.query.filename;
+
+        const metadata = getMetadata(fileName, true, true);
+
+        playlists[id].items.push({
+            title: metadata.title,
+            artist: metadata.artist,
+            length: calculateTime(metadata.length),
+            filename: fileName
+        });
+    }
+
+    if (action == "REMOVE_SONG") {
+        const fileName = req.query.filename;
+
+        const itemsExcludingDeleted = playlists[id].items.filter((item) => item.filename !== fileName);
+
+        playlists[id].items = itemsExcludingDeleted;
+    }
+
+    updatePlaylists(playlists);
+
+    playlists[id]["password"] = undefined;
+
+    return res.json(playlists[id]);
+});
+
 //Uploads
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -154,8 +281,15 @@ const audioFilter = function (req, file, cb) {
 
 const upload = multer({ storage: storage, fileFilter: audioFilter});
 
-app.post('/upload', upload.single('file'), (req, res) => {
-    res.status(200).json({ message: 'File uploaded successfully' });
+app.post('/upload', upload.single('file'), async (req, res) => {
+    const processed = await processMetadata(req.file.originalname);
+
+    if (processed) {
+        res.status(200).json({ message: 'File uploaded successfully' });
+    } else {
+        res.status(500).json({error: "Error processing file"});
+    }
+    
 });
 
 app.listen(port, () => {

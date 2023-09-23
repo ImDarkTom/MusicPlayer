@@ -7,12 +7,14 @@ const searchBox = select('input#search');
 const searchResults = select('ul#search-results');
 const searchResultTemplate = select('template#search-result-template');
 
+const playingAudio = select('audio#playing');
 
 const menuBtn = select('button#menu');
 const dropdownList = select('ul#dropdown-menu');
 
 const uploadBtn = select('li#upload-btn');
-const uploadMenuBg = select('div#upload-background');
+
+const popupWindowBg = select('div#popup-window-background');
 
 const shareSongBtn = document.querySelector('li#share-song');
 
@@ -56,12 +58,12 @@ menuBtn.addEventListener('click', () => {
 });
 
 uploadBtn.addEventListener('click', () => {
-    uploadMenuBg.style.display = "block";
+    showPopupWindow("upload.html");
 });
 
-uploadMenuBg.addEventListener('click', (e) => {
-    if (e.target.id = "upload-background") { 
-        uploadMenuBg.style.display = "none";
+popupWindowBg.addEventListener('click', (e) => {
+    if (e.target.id = "popup-window-background") { 
+        popupWindowBg.style.display = "none";
     }
 });
 
@@ -122,4 +124,13 @@ async function listSongResults(query) {
 
         searchResults.appendChild(clone);
     }
+}
+
+export function showPopupWindow(url) {
+    popupWindowBg.querySelector('iframe#popup-frame').src = `/${url}`;
+    popupWindowBg.style.display = "block";
+}
+
+export function closePopupWindow() {
+    popupWindowBg.style.display = "none";
 }

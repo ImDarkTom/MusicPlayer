@@ -1,5 +1,6 @@
 import * as icons from '../icons.js'
 import { getFavsList } from '../utils/storage.js'
+import { showPopupWindow } from './topbar.js';
 
 // Selectors
 const select = (selector) => document.querySelector(selector);
@@ -13,7 +14,8 @@ const songNameText = select('p#bar-title');
 
 const loopBtn = select('button#loop-song');
 const favBtn = select('button#fav-song');
-
+const nextTrackBtn = select('button#next-track');
+const prevTrackBtn = select('button#prev-track');
 
 const playPauseBtn = select('button#play-pause');
 
@@ -25,7 +27,13 @@ const audioDuration = select("p#audioduration");
 
 const audioCurrent = select('p#audiocurrent');
 
+const contextMenu = select('div#song-context-menu');
+const saveToPlaylistBtn = select('li#add-to-playlist');
+
 const hasMediaSession = navigator.mediaSession == undefined ? false : true;
+
+let playlist = [];
+let playlistIndex = 0;
 
 //Listeners
 //audio bar
@@ -60,6 +68,11 @@ loopBtn.addEventListener('click', () => {
     }
 });
 
+prevTrackBtn.addEventListener('click', () => {loadPrevTrack()});
+navigator.mediaSession.setActionHandler('previoustrack', () => {loadPrevTrack()});
+
+nextTrackBtn.addEventListener('click', () => {loadNextTrack()});
+navigator.mediaSession.setActionHandler('nexttrack', () => {loadNextTrack()});
 
 //other
 playingAudio.addEventListener('play', () => {
@@ -88,6 +101,7 @@ playingAudio.addEventListener('ended', function () {
     if (hasMediaSession) {
         navigator.mediaSession.playbackState = 'none';
     }
+    loadNextTrack();
 });
 
 playingAudio.addEventListener('timeupdate', () => {
@@ -150,6 +164,29 @@ function playSong(fileName) {
     loadSongMetaData(fileName);
 }
 
+function loadPlaylist(list, index) {
+    playlist = list;
+    playlistIndex = index;
+}
+
+function loadNextTrack() {
+    if (playlist.length == 0) {
+        return;
+    }
+
+    playlistIndex = (playlistIndex + 1) % playlist.length;
+    playSong(playlist[playlistIndex]);
+}
+
+function loadPrevTrack() {
+    if (playlist.length == 0) {
+        return;
+    }
+
+    playlistIndex = (playlistIndex - 1 + playlist.length) % playlist.length;
+    playSong(playlist[playlistIndex]);
+}
+
 async function loadSongMetaData(fileName) {
     const favsList = getFavsList();
 
@@ -199,8 +236,30 @@ songCover.addEventListener('click', async () => {
     
 });
 
+document.onclick = function(e) {
+    contextMenu.classList.remove('enabled');
+}
+
+songCover.oncontextmenu = function(e) {
+    e.preventDefault();
+
+    contextMenu.classList.add('enabled');
+    contextMenu.style.top = (e.clientY - contextMenu.offsetHeight) + "px";
+    contextMenu.style.left = e.clientX + "px";
+}
+
+saveToPlaylistBtn.addEventListener('click', (e) => {
+    if (!playingAudio.dataset.filename) {
+        alert('No song is playing.')
+        return;
+    }
+
+    showPopupWindow(`save-to-playlist.html#${playingAudio.dataset.filename}`);
+});
+
 export {
     playSong,
+    loadPlaylist
 }
 
 setAudioVolume();
