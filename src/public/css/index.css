@@ -149,6 +149,7 @@ input#search {
 
 div#top-bar {
     width: 100vw;
+    height: 8%;
     display: flex;
     align-items: center;
     justify-content: center;

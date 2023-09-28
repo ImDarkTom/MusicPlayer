@@ -3,7 +3,6 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const ID3 = require('node-id3');
-const { getAudioDurationInSeconds } = require('get-audio-duration')
 
 const config = require('../config.json');
 
@@ -47,10 +46,6 @@ async function processMetadata(fileName) {
 
     const tags = ID3.read(filePath);
 
-    const duration = await getAudioDurationInSeconds(filePath);
-
-    tags.comment = [{ language: 'eng', text: String(calculateTime(Math.round(duration))) }];
-
     if (!tags.artist) {
         tags.artist = "Unknown Artist";
     }
@@ -59,7 +54,7 @@ async function processMetadata(fileName) {
         tags.album = "Unknown Album";
     }
 
-    const success = NodeID3.write(tags, fileName);
+    const success = ID3.write(tags, fileName);
 
     return success;
 }
