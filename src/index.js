@@ -59,28 +59,6 @@ async function processMetadata(fileName) {
     return success;
 }
 
-function getPlaylists() {
-    const filePath = path.join(__dirname, '..', 'data', 'playlists.json');
-
-    const fileData = fs.readFileSync(filePath);
-    const playlistData = JSON.parse(fileData);
-
-    return playlistData;
-}
-
-function updatePlaylists(json) {
-    fs.writeFileSync(path.join(__dirname, '..', 'data', 'playlists.json'), JSON.stringify(json));
-    return;
-}
-
-function calculateTime(secs) {
-    const minutes = Math.floor(secs / 60);
-    const seconds = Math.round(secs % 60);
-    const returnedSecs = seconds < 10 ? `0${seconds}` : seconds;
-
-    return `${minutes}:${returnedSecs}`;
-};
-
 app.get('/details/:fileName', (req, res) => {
     const metadata = getMetadata(req.params.fileName);
 
@@ -165,96 +143,6 @@ app.get("/api/recents", (req, res) => {
         console.error("Error:", err);
         res.status(500).json({ error: "Internal server error" });
     }
-});
-
-//Playlist
-app.get('/api/playlist/:id', (req, res) => {
-    const id = req.params.id;
-
-    const playlists = getPlaylists();
-
-    if (playlists[id] == undefined) {
-        res.status(404);
-        return;
-    } 
-
-    const playlist = playlists[id];
-    playlist["password"] = undefined;
-
-    res.json(playlists[id]);
-});
-
-app.get('/api/playlist_create', (req, res) => {
-    const title = req.query.title;
-    const password = req.query.password;
-
-    if (!title || !password) {
-        return res.status(400);
-    }
-
-    const timeMs = Date.now();
-
-    const playlists = getPlaylists();
-
-    playlists[timeMs] = {
-        password: password,
-        metadata: {
-            title: title
-        },
-        items: []
-    };
-
-    updatePlaylists(playlists);
-
-    res.status(200).json({status: 'OK', id: timeMs});
-});
-
-app.get('/api/playlist/:id/edit', (req, res) => {
-    const id = req.params.id;
-    const action = req.query.action;
-    const password = req.query.password;
-
-    if (!action) {
-        return res.status(400);
-    }
-
-    const playlists = getPlaylists();
-
-    if (playlists[id] == undefined) {
-        return res.status(404);
-    } 
-
-    if (playlists[id].password != password) {
-        return res.status(401);
-    }
-
-
-    if (action == "ADD_SONG") {
-        const fileName = req.query.filename;
-
-        const metadata = getMetadata(fileName, true, true);
-
-        playlists[id].items.push({
-            title: metadata.title,
-            artist: metadata.artist,
-            length: calculateTime(metadata.length),
-            filename: fileName
-        });
-    }
-
-    if (action == "REMOVE_SONG") {
-        const fileName = req.query.filename;
-
-        const itemsExcludingDeleted = playlists[id].items.filter((item) => item.filename !== fileName);
-
-        playlists[id].items = itemsExcludingDeleted;
-    }
-
-    updatePlaylists(playlists);
-
-    playlists[id]["password"] = undefined;
-
-    return res.json(playlists[id]);
 });
 
 //Uploads

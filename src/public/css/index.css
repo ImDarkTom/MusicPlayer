@@ -4,11 +4,11 @@ html, body {
 
 iframe#main-window {
     width: 100vw;
-    height: 100%;
+    height: 92%;
 }
 
 div#app-container {
-    height: 90%;
+    height: 90dvh;
 }
 
 div.horizontal-song-list {
@@ -443,7 +443,6 @@ span#audio-time>p {
     margin: 0 auto;
 }
 
-/* Ctx menu */
 div#song-context-menu {
     width: 300px;
     background-color: var(--darken-40);

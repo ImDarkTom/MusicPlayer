@@ -47,22 +47,6 @@ window.addEventListener('message', async (event) => {
         loadWindow(param.page, param.data);
         return;
     }
-
-    if (action == "CREATE_PLAYLIST") {
-        const playlistName = prompt("Playlist name (leave blank for default): ");
-
-        const playlistPassword = prompt("Playlist password: ");
-
-        if (!playlistPassword) {
-            alert("Password not set, cancelled playlist creation.")
-            return;
-        }
-
-        const response = await fetch(`/api/playlist_create?title=${playlistName ? playlistName: "My Playlist"}&password=${playlistPassword}`);
-        const json = await response.json();
-
-        loadWindow('playlist', json.id);
-    }
     
 }, false);
 

@@ -248,15 +248,6 @@ songCover.oncontextmenu = function(e) {
     contextMenu.style.left = e.clientX + "px";
 }
 
-saveToPlaylistBtn.addEventListener('click', (e) => {
-    if (!playingAudio.dataset.filename) {
-        alert('No song is playing.')
-        return;
-    }
-
-    showPopupWindow(`save-to-playlist.html#${playingAudio.dataset.filename}`);
-});
-
 export {
     playSong,
     loadPlaylist
