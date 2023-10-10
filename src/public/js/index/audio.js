@@ -74,6 +74,10 @@ navigator.mediaSession.setActionHandler('previoustrack', () => {loadPrevTrack()}
 nextTrackBtn.addEventListener('click', () => {loadNextTrack()});
 navigator.mediaSession.setActionHandler('nexttrack', () => {loadNextTrack()});
 
+navigator.mediaSession.setActionHandler('seekto', (details) => {
+    playingAudio.currentTime = details.seekTime;
+});
+
 //other
 playingAudio.addEventListener('play', () => {
     playPauseBtn.innerHTML = icons.pause;
