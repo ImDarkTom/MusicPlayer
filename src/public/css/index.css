@@ -29,51 +29,54 @@ div.horizontal-song-list>ul.song-list {
     padding-inline-end: 0.5vw;
     overflow-x: scroll;
     white-space: nowrap;
-    height: 30dvh;
+    height: auto;
     overflow-y: hidden;
 }
 
 li.song-list-card {
     cursor: pointer;
-    display: block;
-    height: 27dvh;
+    height: auto;
+    width: 150px;
+    aspect-ratio: 2/3;
     padding: 0;
-    width: var(--card-width);
     border-radius: 0.5rem;
     background-color: var(--card-color);
     margin: 1dvh 0.5vw;
+    padding: 10px;
     display: inline-block;
     user-select: none;
     transition: filter 0.3s ease;
 }
 
 li.song-list-card:hover {
-    filter: brightness(1.2);
-    transform: scale(1.05);
+    background-color: var(--card-color-hover);
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
 li.song-list-card>img {
-    width: 80%;
+    width: 100%;
     height: auto;
-    margin: 10%;
     border-radius: 0.5rem;
 }
 
 li.song-list-card>p {
-    margin: 0 0 0 1vw;
     box-sizing: border-box;
-    width: calc(var(--card-width) - 2vw);
+    width: 100%;
     text-align: left;
     text-overflow: ellipsis;
     overflow: hidden;
     color: var(--text-col);
+    margin: 0;
 }
 
 li.song-list-card>p.title {
     font-weight: bold;
     font-size: 1.1rem;
-    margin: 0 0 0.5dvh 1vw;
+    margin: 1ch 0;
+}
+
+li.song-list-card>p.artist {
+    color: rgb(205, 205, 205);
 }
 
 /* menu bar */

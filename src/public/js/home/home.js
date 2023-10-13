@@ -18,6 +18,8 @@ async function loadSuggested() {
         const clone = songListCardTemplate.content.cloneNode(true);
 
         const baseElement = clone.querySelector('li');
+        const titleElement = clone.querySelector('p.title');
+        const artistElement = clone.querySelector('p.artist');
 
         const response = await fetch(`/details/${favName}`);
         const songDetails = await response.json();
@@ -26,9 +28,13 @@ async function loadSuggested() {
         const title = songDetails.title;
 
         baseElement.onclick = function() {sendMessage(["PLAY_SONG", favName]);};
-        baseElement.title = `${artist} - ${title}`;
-        clone.querySelector('p.title').textContent = title;
-        clone.querySelector('p.artist').textContent = artist;
+
+        titleElement.textContent = title;
+        titleElement.title = title;
+
+        artistElement.textContent = artist;
+        artistElement.title = artist;
+
         clone.querySelector('img').src = `/details/${favName}/image`;
 
         favsSongsList.appendChild(clone);
@@ -46,11 +52,17 @@ async function loadSuggested() {
         const artist = currentDetails.artist;
 
         const baseElement = clone.querySelector('li');
+        const titleElement = clone.querySelector('p.title');
+        const artistElement = clone.querySelector('p.artist');
 
-        baseElement.onclick = function() { sendMessage(["PLAY_SONG", files[index]]); };
-        baseElement.title = `${artist} - ${title}`;
-        clone.querySelector('p.title').textContent = title;
-        clone.querySelector('p.artist').textContent = artist;
+        baseElement.onclick = function() {sendMessage(["PLAY_SONG", files[index]]);};
+
+        titleElement.textContent = title;
+        titleElement.title = title;
+
+        artistElement.textContent = artist;
+        artistElement.title = artist;
+
         clone.querySelector('img').src = `/details/${files[index]}/image`;
 
         recentUploadsList.appendChild(clone);
