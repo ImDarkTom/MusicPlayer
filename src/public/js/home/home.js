@@ -16,11 +16,12 @@ function createCard(songInfo) {
     const baseElement = clone.querySelector('li');
     const titleElement = clone.querySelector('p.title');
     const artistElement = clone.querySelector('p.artist');
+    const imageElement = clone.querySelector('img');
 
     const filename = songInfo.file.filename;
     const artist = songInfo.meta.artist;
     const title = songInfo.meta.title;
-    //const album = songDetails.meta.album;
+    const album = songInfo.meta.album;
 
     baseElement.onclick = function () { sendMessage(["PLAY_SONG", filename]); };
 
@@ -30,39 +31,55 @@ function createCard(songInfo) {
     artistElement.textContent = artist;
     artistElement.title = artist;
 
-    clone.querySelector('img').src = `/details/${filename}/image`;
+    imageElement.src = `/details/${filename}/image`;
+    imageElement.title = album;
 
     return clone;
 }
 
-async function loadSuggested() {
-    //Favs
-    const favsList = getFavsList();
+async function updateSongListFormat(storageKey, fileList) {
+    //Turns list of files into list of metadata
+    const newList = [];
 
-    for (const favName of favsList) {
-        const clone = songListCardTemplate.content.cloneNode(true);
-
-        const baseElement = clone.querySelector('li');
-        const titleElement = clone.querySelector('p.title');
-        const artistElement = clone.querySelector('p.artist');
-
-        const response = await fetch(`/details/${favName}`);
+    for (const file of fileList) {
+        const response = await fetch(`/details/${file}`);
         const songDetails = await response.json();
 
         const artist = songDetails.artist;
         const title = songDetails.title;
+        const album = songDetails.album;
 
-        baseElement.onclick = function() {sendMessage(["PLAY_SONG", favName]);};
+        const item = {
+            file: {
+                filename: file,
+            },
+            meta: {
+                title: title,
+                artist: artist,
+                album: album,
+            }
+        }
 
-        titleElement.textContent = title;
-        titleElement.title = title;
+        newList.push(item);
+    }
 
-        artistElement.textContent = artist;
-        artistElement.title = artist;
+    localStorage.setItem(storageKey, JSON.stringify(newList));
+}
 
-        clone.querySelector('img').src = `/details/${favName}/image`;
+async function loadSuggested() {
+    //Favs
+    let favsList = getFavsList();
 
-        favsSongsList.appendChild(clone);
+    if (typeof favsList[0] == "string") {
+        await updateSongListFormat('favourites', favsList);
+
+        favsList = getFavsList();
+    }
+
+    for (const favInfo of favsList) {
+        const card = createCard(favInfo);
+
+        favsSongsList.appendChild(card);
     }
 
     //Recents
