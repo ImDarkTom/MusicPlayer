@@ -3,7 +3,7 @@ import { playSong, loadPlaylist } from './index/audio.js'
 const mainIframe = document.querySelector('iframe#main-window');
 
 const trackName = new URL(window.location.href).searchParams.get("track");
-const hash = window.location.hash.replace('#', '').split("-");
+const [ hashLocation, hashArgs ] = window.location.hash.replace('#', '').split("-");
 
 function loadWindow(page, params = "") {
     if (page == "") {
@@ -13,15 +13,10 @@ function loadWindow(page, params = "") {
     }
 
     mainIframe.src = `/${page}.html#${params}`;
-    window.location.hash = `${page ? "#" + page: ""}${params ? "-" + params: ""}`;
 }
 
-if (hash) {
-    const validPages = ["home", "playlist"];
-    if (validPages.includes(hash[0])) {
-        loadWindow(hash[0], hash[1])
-    }
-
+if (hashLocation) {
+    loadWindow(hashLocation, hashArgs);
 }
 
 if (trackName) {
