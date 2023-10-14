@@ -20,7 +20,7 @@ if (hashLocation) {
 }
 
 if (trackName) {
-    const fileName = atob(trackName);
+    const fileName = decodeURIComponent(atob(trackName));
     playSong(fileName);
 }
 

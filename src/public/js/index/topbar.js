@@ -75,7 +75,7 @@ shareSongBtn.addEventListener('click', () => {
         return;
     }
 
-    const textToCopy = `${window.location.origin}?track=${btoa(playingSongFile)}`;
+    const textToCopy = `${window.location.origin}?track=${btoa(encodeURIComponent(playingSongFile))}`;
 
     if (navigator.clipboard) {
 
