@@ -4,6 +4,7 @@ const ID3 = require('node-id3');
 
 const acceptedFileTypes = [".mp3", ".wav", ".ogg", ".aac"];
 const infoPath = path.join(__dirname, 'database', 'info.json');
+const imagesPath = path.join(__dirname, 'database', 'images');
 
 //Metadata
 async function processMetadata(fileName) {
@@ -76,7 +77,13 @@ function updateDBInfo() {
     const data = [];
 
     for (const file of files) {
-        const tags = getMetadata(file);
+        const tags = getMetadata(file, false);
+
+        if (tags.image) {
+            const imageBuffer = tags.image.imageBuffer;
+
+            fs.writeFileSync(path.join(imagesPath, `${file}.png`), imageBuffer);
+        }
 
         const stats = fs.statSync(path.join(__dirname, '..', 'music', file));
         const uploadTime = stats.mtimeMs;

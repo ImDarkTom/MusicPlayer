@@ -2,4 +2,6 @@
 /node_modules
 /src/public/favicon.ico
 config.json
-/src/database/*
+
+/src/database/**
+!/src/database/images/

@@ -24,17 +24,16 @@ app.get('/details/:fileName', (req, res) => {
 });
 
 app.get('/details/:fileName/image', (req, res) => {
-    const rawMetadata = db.getMetadata(req.params.fileName, false);
+    const fileName = req.params.fileName;
+    let coverPath = path.join(__dirname, 'database', 'images', `${fileName}.png`);
 
-    if (!rawMetadata.image) {
-        res.redirect('/img/placeholder-cover.jpg');
-        return;
+    const hasCover = fs.existsSync(coverPath);
+
+    if (!hasCover) {
+        coverPath = path.join(__dirname, 'public', 'img', 'placeholder-cover.jpg');
     }
-
-    res.setHeader('Content-Type', 'image/jpeg');
-    res.setHeader('Content-Length', rawMetadata.image.imageBuffer.length);
     
-    res.send(rawMetadata.image.imageBuffer);
+    res.sendFile(coverPath);
 });
 
 app.get('/song/:fileName', (req, res) => {
@@ -50,24 +49,22 @@ app.get('/song/:fileName', (req, res) => {
 
 app.get("/search", (req, res) => {
     const query = req.query.q.toLowerCase();
+    const resultList = [];
 
-    const files = fs.readdirSync(path.join(__dirname, '..', 'music')).filter(file => acceptedFileTypes.includes(path.extname(file).toLowerCase()));
-    let songDetails = [];
-    let fileNames = [];
+    const songInfo = db.getDB();
 
-    for (const file of files) {
-        const tags = db.getMetadata(file);
+    for (const song of songInfo) {
+        const metadata = song.meta;
 
-        const title = tags.title;
-        const artist = tags.artist;
-
-        if (`${artist} ${title}`.toLowerCase().includes(query)) {
-            songDetails.push({title: title, artist: artist});
-            fileNames.push(file);
+        for (const key in metadata) {
+            if (metadata[key].toLowerCase().includes(query)) {
+                resultList.push(song);
+                break;
+            }
         }
     }
 
-    res.send([songDetails, fileNames]);
+    res.json(resultList);
 });
 
 app.get("/api/recents", (req, res) => {
