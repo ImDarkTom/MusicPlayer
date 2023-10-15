@@ -27,7 +27,7 @@ searchBox.addEventListener('keyup', (e) => {
         return;
     }
 
-    if (searchBox.value.length < 2) {
+    if (searchBox.value == "") {
         return;
     }
 
@@ -110,17 +110,19 @@ shareSongBtn.addEventListener('click', () => {
 //Functions
 async function listSongResults(query) {
     const response = await fetch(`/search?q=${query}`);
-    const [songDetails, files] = await response.json();
+    const songList = await response.json();
 
     searchResults.innerHTML = "";
 
-    for (const index in files) {
+    for (const song of songList) {
+        const songMeta = song.meta;
+        const songFilename = song.file.filename;
         const clone = searchResultTemplate.content.cloneNode(true);
 
-        clone.querySelector('li').onclick = function() {playSong(files[index]);};
-        clone.querySelector('p.result-song-title').textContent = songDetails[index].title;
-        clone.querySelector('p.result-song-artist').textContent = songDetails[index].artist;
-        clone.querySelector('img').src = `/details/${files[index]}/image`;
+        clone.querySelector('li').onclick = function() {playSong(songFilename);};
+        clone.querySelector('p.result-song-title').textContent = songMeta.title;
+        clone.querySelector('p.result-song-artist').textContent = songMeta.artist;
+        clone.querySelector('img').src = `/details/${songFilename}/image`;
 
         searchResults.appendChild(clone);
     }
