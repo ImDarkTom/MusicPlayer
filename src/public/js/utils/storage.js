@@ -3,7 +3,7 @@ function getLocalStorageData(key, fallback) {
     return item ? JSON.parse(item) : fallback;
 }
 
-function setLocalStorageData(key, value) {
+export function setLocalStorageData(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
 }
 

@@ -1,6 +1,5 @@
 import * as icons from '../icons.js'
-import { getFavsList } from '../utils/storage.js'
-import { showPopupWindow } from './topbar.js';
+import { getFavsList, setLocalStorageData } from '../utils/storage.js'
 
 // Selectors
 const select = (selector) => document.querySelector(selector);
@@ -28,7 +27,6 @@ const audioDuration = select("p#audioduration");
 const audioCurrent = select('p#audiocurrent');
 
 const contextMenu = select('div#song-context-menu');
-const saveToPlaylistBtn = select('li#add-to-playlist');
 
 const hasMediaSession = navigator.mediaSession == undefined ? false : true;
 
@@ -37,22 +35,26 @@ let playlistIndex = 0;
 
 //Listeners
 //audio bar
-favBtn.addEventListener('click', () => {
+favBtn.addEventListener('click', async () => {
     const playingSong = playingAudio.dataset.filename;
     const favsList = getFavsList();
+    const filesList = favsList.map((item) => item.file.filename);
 
-    if (favsList.includes(playingSong)) {
-        const updatedFavs = favsList.filter(item => item !== playingSong);
+    if (filesList.includes(playingSong)) {
+        const updatedFavs = favsList.filter(item => item.file.filename !== playingSong);
 
-        localStorage.setItem('favourites', JSON.stringify(updatedFavs));
+        setLocalStorageData('favourites', updatedFavs);
 
         favBtn.innerHTML = icons.heartOutline;
         return;
     }
 
-    favsList.unshift(playingAudio.dataset.filename);
+    const response = await fetch(`/details/${playingSong}`);
+    const info = await response.json();
 
-    localStorage.setItem('favourites', JSON.stringify(favsList));
+    favsList.unshift(info);
+
+    setLocalStorageData('favourites', favsList);
 
     favBtn.innerHTML = icons.heartFilled;
 });
