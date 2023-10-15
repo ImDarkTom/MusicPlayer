@@ -4,7 +4,7 @@ src/public/favicon.ico
 
 #Ignore folder contents
 music/*
-!music/
+!music/place-audio-files-here.txt
 
 src/database/**
 !src/database/
