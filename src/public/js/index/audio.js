@@ -199,7 +199,9 @@ async function loadSongMetaData(fileName) {
 
     const imagePath = `/details/${fileName}/image`;
 
-    if (favsList.includes(fileName)) {
+    const favFiles = favsList.map((item) => item.file.filename);
+
+    if (favFiles.includes(fileName)) {
         favBtn.innerHTML = icons.heartFilled;;
     } else {
         favBtn.innerHTML = icons.heartOutline;;
