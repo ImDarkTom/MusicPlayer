@@ -120,7 +120,7 @@ function updateDBInfo() {
         data.push(item);
     }
 
-    fs.writeFileSync(infoPath, JSON.stringify(data), {encoding:'utf8',flag:'w'});
+    fs.writeFileSync(path.join(dbFolderPath, 'info.json'), JSON.stringify(data), {encoding:'utf8',flag:'w'});
 
     console.log("✅ Finished DB update");
 }
