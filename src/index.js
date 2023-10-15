@@ -30,7 +30,7 @@ app.get('/details/:fileName/image', (req, res) => {
     const hasCover = fs.existsSync(coverPath);
 
     if (!hasCover) {
-        coverPath = path.join(__dirname, 'public', 'img', 'placeholder-cover.jpg');
+        coverPath = path.join(__dirname, 'public', 'img', 'default-cover.jpg');
     }
     
     res.sendFile(coverPath);

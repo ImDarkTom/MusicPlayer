@@ -1,7 +1,11 @@
-/music/*
 /node_modules
-/src/public/favicon.ico
 config.json
+src/public/favicon.ico
 
-/src/database/**
-!/src/database/images/
+#Ignore folder contents
+music/*
+!music/
+
+src/database/**
+!src/database/
+!src/database/images/
