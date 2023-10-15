@@ -3,12 +3,13 @@ const path = require('path');
 const ID3 = require('node-id3');
 
 const acceptedFileTypes = [".mp3", ".wav", ".ogg", ".aac"];
-const infoPath = path.join(__dirname, 'database', 'info.json');
-const imagesPath = path.join(__dirname, 'database', 'images');
+
+const musicFolderPath = path.join(__dirname, '..', 'music');
+const dbFolderPath = path.join(__dirname, 'database');
 
 //Metadata
-async function processUploadMetadata(fileName) {
-    const filePath = path.join(__dirname, '..', 'music', fileName);
+function processUploadMetadata(fileName) {
+    const filePath = path.join(musicFolderPath, fileName);
 
     const tags = ID3.read(filePath);
 
@@ -31,8 +32,8 @@ async function processUploadMetadata(fileName) {
     return success;
 }
 
-function getMetadata(fileName, excludeImage = true, excludeRaw = true) {
-    const filePath = path.join(__dirname, '..', 'music', fileName);
+function getFileID3(fileName, excludeImage = true, excludeRaw = true) {
+    const filePath = path.join(musicFolderPath, fileName);
 
     if (!fs.existsSync(filePath)) {
         return -1;
@@ -59,16 +60,24 @@ function getMetadata(fileName, excludeImage = true, excludeRaw = true) {
     return metadata;
 }
 
+function getMetadata(fileName) {
+    const db = getDB();
+
+    const foundItem = db.find(item => item.file.filename === fileName)
+
+    return foundItem;
+}
+
 //DB
 function getDB() {
-    const file = fs.readFileSync(path.join(__dirname, 'database', 'info.json'));
+    const file = fs.readFileSync(path.join(dbFolderPath, 'info.json'));
     const jsonData = JSON.parse(file.toString());
 
     return jsonData;
 }
 
 function updateDBInfo() {
-    const files = fs.readdirSync(path.join(__dirname, '..', 'music')).filter(file => acceptedFileTypes.includes(path.extname(file).toLowerCase()));
+    const files = fs.readdirSync(musicFolderPath).filter(file => acceptedFileTypes.includes(path.extname(file).toLowerCase()));
     const db = getDB();
 
     if (files.length == db.length) {
@@ -81,20 +90,20 @@ function updateDBInfo() {
     const data = [];
 
     for (const file of files) {
-        const tags = getMetadata(file, false);
+        const tags = getFileID3(file, false);
 
         if (tags.image) {
             const imageBuffer = tags.image.imageBuffer;
 
-            fs.writeFileSync(path.join(imagesPath, `${file}.png`), imageBuffer);
+            fs.writeFileSync(path.join(dbFolderPath, 'images', `${file}.png`), imageBuffer);
         }
 
-        const stats = fs.statSync(path.join(__dirname, '..', 'music', file));
+        const stats = fs.statSync(path.join(musicFolderPath, file));
         const uploadTime = stats.mtimeMs;
 
-        const title = tags.title;
-        const artist = tags.artist;
-        const album = tags.album;
+        const title = tags.title ? tags.title : file;
+        const artist = tags.artist ? tags.artist : "Unknown Artist";
+        const album = tags.album ? tags.album : "Unknown Album";
 
         const item = {
             file: {

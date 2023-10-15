@@ -197,6 +197,11 @@ async function loadSongMetaData(fileName) {
     const response = await fetch(`/details/${fileName}`);
     const data = await response.json();
 
+    const meta = data.meta;
+    const title = meta.title;
+    const artist = meta.artist;
+    const album = meta.album;
+
     const imagePath = `/details/${fileName}/image`;
 
     const favFiles = favsList.map((item) => item.file.filename);
@@ -208,15 +213,15 @@ async function loadSongMetaData(fileName) {
     }
     
     songCover.src = imagePath;
-    artistText.textContent = data.artist;
-    songNameText.textContent = data.title;
-    document.title = `${data.title} | Music Player`
+    artistText.textContent = artist;
+    songNameText.textContent = title;
+    document.title = `${title} | Music Player`
 
     if (navigator.mediaSession != undefined) {
         navigator.mediaSession.metadata = new MediaMetadata({
-            title: data.title,
-            artist: data.artist,
-            album: data.album,
+            title: title,
+            artist: artist,
+            album: album,
             artwork: [
                 {
                     src: imagePath,
@@ -242,7 +247,7 @@ songCover.addEventListener('click', async () => {
     
 });
 
-document.onclick = function(e) {
+document.onclick = function() {
     contextMenu.classList.remove('enabled');
 }
 
