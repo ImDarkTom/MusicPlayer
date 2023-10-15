@@ -7,10 +7,14 @@ const infoPath = path.join(__dirname, 'database', 'info.json');
 const imagesPath = path.join(__dirname, 'database', 'images');
 
 //Metadata
-async function processMetadata(fileName) {
+async function processUploadMetadata(fileName) {
     const filePath = path.join(__dirname, '..', 'music', fileName);
 
     const tags = ID3.read(filePath);
+
+    if (!tags.title) {
+        tags.title = fileName;
+    }
 
     if (!tags.artist) {
         tags.artist = "Unknown Artist";
@@ -114,7 +118,7 @@ function updateDBInfo() {
 
 module.exports = {
     getMetadata,
-    processMetadata,
+    processUploadMetadata,
     updateDBInfo,
     getDB
 }

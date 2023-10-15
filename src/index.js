@@ -100,7 +100,7 @@ const audioFilter = function (req, file, cb) {
 const upload = multer({ storage: storage, fileFilter: audioFilter});
 
 app.post('/upload', upload.single('file'), async (req, res) => {
-    const processed = await db.processMetadata(req.file.originalname);
+    const processed = await db.processUploadMetadata(req.file.originalname);
 
     if (processed) {
         res.status(200).json({ message: 'File uploaded successfully' });
