@@ -88,35 +88,41 @@ function getDB(fileName) {
         } else {
             throw err;
         }
-        
+
     }
 }
 
 function updateDBInfo() {
-    const files = fs.readdirSync(musicFolderPath).filter(file => acceptedFileTypes.includes(path.extname(file).toLowerCase()));
+    const musicFiles = fs.readdirSync(musicFolderPath).filter(file => acceptedFileTypes.includes(path.extname(file).toLowerCase()));
 
     const musicDB = getDB('music.json');
 
-    if (files.length == musicDB.length) {
+    if (musicFiles.length == musicDB.length) {
         console.log("✅ DB unchanged.");
         return;
     }
 
     console.log("🔄 Updating DB with new files...");
 
-    const data = [];
+    //Update music database
+    const mappedMusicDBFiles = musicDB.map((song) => song.file.filename)
 
-    for (const file of files) {
+    for (const file of musicFiles) {
+        if (mappedMusicDBFiles.includes(file)) {
+            continue;
+        }
+
         const tags = getFileID3(file, false);
 
-        if (tags.image) {
-            const imageBuffer = tags.image.imageBuffer;
+        const metadataImage = tags.image;
+        if (metadataImage) {
+            const imageBuffer = metadataImage.imageBuffer;
 
             fs.writeFileSync(path.join(dbFolderPath, 'images', `${file}.png`), imageBuffer);
         }
 
-        const stats = fs.statSync(path.join(musicFolderPath, file));
-        const uploadTime = stats.mtimeMs;
+        const fileStats = fs.statSync(path.join(musicFolderPath, file));
+        const lastModifiedTime = fileStats.mtimeMs; 
 
         const title = tags.title ? tags.title : file;
         const artist = tags.artist ? tags.artist : "Unknown Artist";
@@ -125,7 +131,7 @@ function updateDBInfo() {
         const item = {
             file: {
                 filename: file,
-                uploadtime: uploadTime,
+                uploadtime: lastModifiedTime,
             },
             meta: {
                 title: title,
@@ -134,10 +140,10 @@ function updateDBInfo() {
             }
         }
 
-        data.push(item);
+        musicDB.push(item);
     }
 
-    fs.writeFileSync(musicDBPath, JSON.stringify(data), {encoding:'utf8',flag:'w'});
+    fs.writeFileSync(musicDBPath, JSON.stringify(musicDB), {encoding:'utf8',flag:'w'});
 
     console.log("✅ Finished DB update");
 }
