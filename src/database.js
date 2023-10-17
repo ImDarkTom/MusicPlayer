@@ -143,7 +143,7 @@ function updateDBInfo() {
         if (songAlbum == "Unknown Album") {
             continue;
         }
-        
+
         const albumInDB = albumDB.find(album => album.name === songAlbum);
 
         if (albumInDB) {
@@ -151,6 +151,7 @@ function updateDBInfo() {
         } else {
             const newAlbum = {
                 name: songAlbum,
+                artist: songArtist,
                 tracks: [fileName],
             };
 

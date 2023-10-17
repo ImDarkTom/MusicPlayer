@@ -47,6 +47,21 @@ app.get('/song/:fileName', (req, res) => {
     res.sendFile(filePath);
 });
 
+app.get('/album/:albumName', (req, res) => {
+    const requestedAlbumName = req.params.albumName;
+
+    const albumDB = db.getDB('albums.json');
+
+    const requestedAlbum = albumDB.find((album) => album.name === requestedAlbumName);
+
+    if (requestedAlbum == undefined) {
+        res.status(404).end();
+        return;
+    }
+
+    res.json(requestedAlbum);
+});
+
 app.get("/search", (req, res) => {
     const query = req.query.q.toLowerCase();
     const resultList = [];
