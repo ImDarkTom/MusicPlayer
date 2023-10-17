@@ -7,6 +7,8 @@ const acceptedFileTypes = [".mp3", ".wav", ".ogg", ".aac"];
 const musicFolderPath = path.join(__dirname, '..', 'music');
 const dbFolderPath = path.join(__dirname, 'database');
 
+const musicDBPath = path.join(dbFolderPath, 'music.json');
+
 //Metadata
 function processUploadMetadata(fileName) {
     const filePath = path.join(musicFolderPath, fileName);
@@ -61,26 +63,41 @@ function getFileID3(fileName, excludeImage = true, excludeRaw = true) {
 }
 
 function getMetadata(fileName) {
-    const db = getDB();
+    const musicDB = getDB('music.json');
 
-    const foundItem = db.find(item => item.file.filename === fileName)
+    const foundItem = musicDB.find(item => item.file.filename === fileName)
 
     return foundItem;
 }
 
 //DB
-function getDB() {
-    const file = fs.readFileSync(path.join(dbFolderPath, 'info.json'));
-    const jsonData = JSON.parse(file.toString());
+function getDB(fileName) {
+    const filePath = path.join(dbFolderPath, fileName);
 
-    return jsonData;
+    try {
+
+        const file = fs.readFileSync(filePath);
+        return JSON.parse(file.toString());
+
+    } catch (err) {
+
+        // If file doesn't exist create empty array for file
+        if (err.code === "ENOENT") {
+            fs.writeFileSync(filePath, "[]");
+            return [];
+        } else {
+            throw err;
+        }
+        
+    }
 }
 
 function updateDBInfo() {
     const files = fs.readdirSync(musicFolderPath).filter(file => acceptedFileTypes.includes(path.extname(file).toLowerCase()));
-    const db = getDB();
 
-    if (files.length == db.length) {
+    const musicDB = getDB('music.json');
+
+    if (files.length == musicDB.length) {
         console.log("✅ DB unchanged.");
         return;
     }
@@ -120,7 +137,7 @@ function updateDBInfo() {
         data.push(item);
     }
 
-    fs.writeFileSync(path.join(dbFolderPath, 'info.json'), JSON.stringify(data), {encoding:'utf8',flag:'w'});
+    fs.writeFileSync(musicDBPath, JSON.stringify(data), {encoding:'utf8',flag:'w'});
 
     console.log("✅ Finished DB update");
 }

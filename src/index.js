@@ -51,9 +51,9 @@ app.get("/search", (req, res) => {
     const query = req.query.q.toLowerCase();
     const resultList = [];
 
-    const songInfo = db.getDB();
+    const musicDB = db.getDB('music.json');
 
-    for (const song of songInfo) {
+    for (const song of musicDB) {
         const metadata = song.meta;
 
         for (const key in metadata) {
@@ -69,11 +69,11 @@ app.get("/search", (req, res) => {
 
 app.get("/api/recents", (req, res) => {
     try {
-        const songInfo = db.getDB();
+        const musicDB = db.getDB('music.json');
 
-        songInfo.sort((a, b) => b.file.uploadtime - a.file.uploadtime);
+        musicDB.sort((a, b) => b.file.uploadtime - a.file.uploadtime);
 
-        res.json(songInfo);
+        res.json(musicDB);
     } catch (err) {
         console.error("Error:", err);
         res.status(500).json({ error: "Internal server error" });
