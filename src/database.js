@@ -7,7 +7,7 @@ const acceptedFileTypes = [".mp3", ".wav", ".ogg", ".aac"];
 const musicFolderPath = path.join(__dirname, '..', 'music');
 const dbFolderPath = path.join(__dirname, 'database');
 
-const musicDBPath = path.join(dbFolderPath, 'music.json');
+const getDBFilePath = (fileName) => path.join(dbFolderPath, fileName);
 
 //Metadata
 function processUploadMetadata(fileName) {
@@ -68,7 +68,7 @@ function getMetadata(fileName) {
 
 //DB
 function getDB(fileName) {
-    const filePath = path.join(dbFolderPath, fileName);
+    const filePath = getDBFilePath(fileName);
 
     try {
 
@@ -100,45 +100,64 @@ function updateDBInfo() {
     console.log("🔄 Updating DB with new files...");
 
     //Update music database
+    const albumDB = getDB('albums.json');
+
     const mappedMusicDBFiles = musicDB.map((song) => song.file.filename)
 
-    for (const file of musicFiles) {
-        if (mappedMusicDBFiles.includes(file)) {
+    for (const fileName of musicFiles) {
+        if (mappedMusicDBFiles.includes(fileName)) {
             continue;
         }
 
-        const tags = getFileID3(file, false);
+        const tags = getFileID3(fileName, false);
 
         const metadataImage = tags.image;
         if (metadataImage) {
             const imageBuffer = metadataImage.imageBuffer;
 
-            fs.writeFileSync(path.join(dbFolderPath, 'images', `${file}.png`), imageBuffer);
+            fs.writeFileSync(path.join(dbFolderPath, 'images', `${fileName}.png`), imageBuffer);
         }
 
-        const fileStats = fs.statSync(path.join(musicFolderPath, file));
+        const fileStats = fs.statSync(path.join(musicFolderPath, fileName));
         const lastModifiedTime = fileStats.mtimeMs; 
 
-        const title = tags.title ? tags.title : file;
-        const artist = tags.artist ? tags.artist : "Unknown Artist";
-        const album = tags.album ? tags.album : "Unknown Album";
+        const songTitle = tags.title ? tags.title : fileName;
+        const songArtist = tags.artist ? tags.artist : "Unknown Artist";
+        const songAlbum = tags.album ? tags.album : "Unknown Album";
 
         const item = {
             file: {
-                filename: file,
+                filename: fileName,
                 uploadtime: lastModifiedTime,
             },
             meta: {
-                title: title,
-                artist: artist,
-                album: album
+                title: songTitle,
+                artist: songArtist,
+                album: songAlbum
             }
         }
 
         musicDB.push(item);
+
+        //Update album db
+        const albumInDB = albumDB.find(album => album.name === songAlbum);
+
+        if (albumInDB) {
+            albumInDB.tracks.push(fileName);
+        } else {
+            const newAlbum = {
+                name: songAlbum,
+                tracks: [fileName],
+            };
+
+            albumDB.push(newAlbum);
+        }
     }
 
-    fs.writeFileSync(musicDBPath, JSON.stringify(musicDB), {encoding:'utf8',flag:'w'});
+    const updateDBFile = (dbFileName, updatedData) => fs.writeFileSync(getDBFilePath(dbFileName), JSON.stringify(updatedData), {encoding:'utf8',flag:'w'});
+    
+    updateDBFile('music.json', musicDB);
+    updateDBFile('albums.json', albumDB);
 
     console.log("✅ Finished DB update");
 }
