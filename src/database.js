@@ -140,6 +140,10 @@ function updateDBInfo() {
         musicDB.push(item);
 
         //Update album db
+        if (songAlbum == "Unknown Album") {
+            continue;
+        }
+        
         const albumInDB = albumDB.find(album => album.name === songAlbum);
 
         if (albumInDB) {
