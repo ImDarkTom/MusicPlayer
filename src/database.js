@@ -37,10 +37,6 @@ function processUploadMetadata(fileName) {
 function getFileID3(fileName, excludeImage = true, excludeRaw = true) {
     const filePath = path.join(musicFolderPath, fileName);
 
-    if (!fs.existsSync(filePath)) {
-        return -1;
-    }
-
     const metadata = ID3.read(filePath);
 
     if (metadata === -1) {
@@ -80,8 +76,7 @@ function getDB(fileName) {
         return JSON.parse(file.toString());
 
     } catch (err) {
-
-        // If file doesn't exist create empty array for file
+        //If file doesnt exist
         if (err.code === "ENOENT") {
             fs.writeFileSync(filePath, "[]");
             return [];
