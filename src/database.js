@@ -152,6 +152,7 @@ function updateDBInfo() {
             const newAlbum = {
                 name: songAlbum,
                 artist: songArtist,
+                year: tags.year,
                 tracks: [fileName],
             };
 

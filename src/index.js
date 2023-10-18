@@ -59,6 +59,17 @@ app.get('/album/:albumName', (req, res) => {
         return;
     }
 
+    const tracks = requestedAlbum.tracks;
+    const tracksMetadata = [];
+
+    for (const song of tracks) {
+        const metadata = db.getMetadata(song);
+
+        tracksMetadata.push(metadata);
+    }
+
+    requestedAlbum.tracks = tracksMetadata;
+
     res.json(requestedAlbum);
 });
 

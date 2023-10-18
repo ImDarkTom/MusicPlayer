@@ -1,4 +1,5 @@
 import * as icons from '../icons.js'
+import { sendMessage } from '../utils/sendPostMessage.js';
 import { getFavsList, setLocalStorageData } from '../utils/storage.js'
 
 // Selectors
@@ -217,6 +218,13 @@ async function loadSongMetaData(fileName) {
     songCover.src = imagePath;
     artistText.textContent = artist;
     songNameText.textContent = title;
+    
+    if (album == "Unknown Album") {
+        songNameText.onclick = "";
+    } else {
+        songNameText.onclick = function() { sendMessage(["LOAD_WINDOW", { page: "album", data: album }]) };
+    }
+
     document.title = `${title} | Music Player`
 
     if (navigator.mediaSession != undefined) {
@@ -233,7 +241,6 @@ async function loadSongMetaData(fileName) {
         });
     }
     
-
     musicBar.style["background-image"] = `url("${imagePath}")`;
 }
 

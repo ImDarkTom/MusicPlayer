@@ -249,6 +249,11 @@ p#bar-title {
     font-weight: bold;
 }
 
+p#bar-title:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 img#bar-album-cover {
     cursor: pointer;
     height: 8dvh;
