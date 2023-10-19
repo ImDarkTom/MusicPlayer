@@ -1,3 +1,4 @@
+import { sendMessage } from '../utils/sendPostMessage.js';
 import { playSong } from './audio.js'
 
 // Selectors
@@ -9,6 +10,7 @@ const searchResultTemplate = select('template#search-result-template');
 
 const playingAudio = select('audio#playing');
 
+const homeButton = select('#home-button');
 const menuBtn = select('button#menu');
 const dropdownList = select('ul#dropdown-menu');
 
@@ -22,6 +24,10 @@ const nonInputKeys = ["ArrowDown", "ArrowUp", "ArrowRight", "ArrowLeft", "Enter"
 
 
 //Listeners
+homeButton.addEventListener('click', () => {
+    sendMessage(["LOAD_WINDOW", { page: "" }]);
+});
+
 searchBox.addEventListener('keyup', (e) => {
     if (nonInputKeys.includes(e.key)) {
         return;
