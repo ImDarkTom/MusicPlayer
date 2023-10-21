@@ -4,7 +4,7 @@ html, body {
 
 iframe#main-window {
     width: 100vw;
-    height: 92%;
+    height: 94%;
 }
 
 div#app-container {
@@ -81,20 +81,23 @@ li.song-list-card>p.artist {
 
 /* menu bar */
 button#menu {
+    height: 100%;
+    aspect-ratio: 1/1;
     color: var(--text-col);
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0.5rem 0.5rem;
-    background: none;
+    font-size: 2rem;
+    background: transparent;
     border: none;
-    font-size: 1rem;
-    z-index: 1;
+    padding: 0;
+    margin: 0;
 }
 
 button#menu:hover {
     background-color: var(--darken-40);
     cursor: pointer;
+}
+
+div#menu-container {
+    height: 100%;
 }
 
 ul#dropdown-menu {
@@ -104,7 +107,7 @@ ul#dropdown-menu {
     color: var(--text-col);
     list-style: none;
     position: absolute;
-    top: 1.8rem;
+    top: 7.2%;
     right: 0;
 }
 
@@ -144,6 +147,7 @@ div#popup-window-background {
 /* search bar */
 #home-button {
     height: 100%;
+    aspect-ratio: 1/1;
     width: auto;
     padding: 0;
     margin: 0;
@@ -162,19 +166,20 @@ div#popup-window-background {
 }
 
 input#search {
-    width: 80vw;
-    padding: 0.5rem;
+    flex: 1;
+    height: 100%;
+    margin: 0 5%;
+    box-sizing: border-box;
+    padding: 0 2ch;
     border: none;
-    font-size: 0.8em;
     outline: none;
 }
 
-div#top-bar {
+nav#top-bar {
     width: 100vw;
-    height: 8%;
+    height: 6%;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 ul#search-results {
@@ -184,7 +189,7 @@ ul#search-results {
     padding: 0;
     position: absolute;
     left: 50%;
-    top: 5dvh;
+    top: 6dvh;
     transform: translateX(-50%);
     margin: 0;
     padding: 0.5rem;
@@ -510,5 +515,35 @@ div#song-context-menu li:hover {
 
     div#bar-controls {
         width: 50vw;
+    }
+
+    nav#top-bar {
+        height: 8%;
+    }
+
+    iframe#main-window {
+        height: 92%;
+    }
+
+    ul#search-results {
+        width: 100vw;
+        max-height: 60dvh;
+        top: 8dvh;
+    }
+
+    iframe#popup-frame {
+        width: 95vw;
+        height: 40dvh;
+    }
+
+    ul#dropdown-menu {
+        width: 100vw;
+        top: 8%;
+    }
+
+    input#search {
+        font-size: 1.3rem;
+        padding: 0;
+        margin: 0;
     }
 }
