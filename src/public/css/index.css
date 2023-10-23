@@ -79,6 +79,11 @@ li.song-list-card>p.artist {
     color: rgb(205, 205, 205);
 }
 
+p.help-card-text {
+    text-wrap: pretty;
+    text-align: center !important;
+} 
+
 /* menu bar */
 button#menu {
     height: 100%;
