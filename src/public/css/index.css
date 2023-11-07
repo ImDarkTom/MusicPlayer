@@ -79,9 +79,10 @@ li.song-list-card>p.artist {
     color: var(--secondary-text-color);
 }
 
-p.help-card-text {
+p.favourite-song-help-text {
     text-wrap: pretty;
     text-align: center !important;
+    color: var(--text-color);
 } 
 
 /* menu bar */
