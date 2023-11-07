@@ -72,14 +72,18 @@ loopBtn.addEventListener('click', () => {
 });
 
 prevTrackBtn.addEventListener('click', () => {loadPrevTrack()});
-navigator.mediaSession.setActionHandler('previoustrack', () => {loadPrevTrack()});
 
 nextTrackBtn.addEventListener('click', () => {loadNextTrack()});
-navigator.mediaSession.setActionHandler('nexttrack', () => {loadNextTrack()});
 
-navigator.mediaSession.setActionHandler('seekto', (details) => {
-    playingAudio.currentTime = details.seekTime;
-});
+if (hasMediaSession) {
+    navigator.mediaSession.setActionHandler('previoustrack', () => {loadPrevTrack()});
+
+    navigator.mediaSession.setActionHandler('nexttrack', () => {loadNextTrack()});
+
+    navigator.mediaSession.setActionHandler('seekto', (details) => {
+        playingAudio.currentTime = details.seekTime;
+    });    
+}
 
 //other
 playingAudio.addEventListener('play', () => {

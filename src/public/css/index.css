@@ -17,7 +17,7 @@ div.horizontal-song-list {
 }
 
 div.horizontal-song-list>h2 {
-    color: var(--text-col);
+    color: var(--text-color);
     user-select: none;
     margin: 0;
 }
@@ -65,7 +65,7 @@ li.song-list-card>p {
     text-align: left;
     text-overflow: ellipsis;
     overflow: hidden;
-    color: var(--text-col);
+    color: var(--text-color);
     margin: 0;
 }
 
@@ -76,14 +76,14 @@ li.song-list-card>p.title {
 }
 
 li.song-list-card>p.artist {
-    color: rgb(205, 205, 205);
+    color: var(--secondary-text-color);
 }
 
 /* menu bar */
 button#menu {
     height: 100%;
     aspect-ratio: 1/1;
-    color: var(--text-col);
+    color: var(--text-color);
     font-size: 2rem;
     background: transparent;
     border: none;
@@ -104,7 +104,7 @@ ul#dropdown-menu {
     display: none;
     width: 20vw;
     margin: 0;
-    color: var(--text-col);
+    color: var(--text-color);
     list-style: none;
     position: absolute;
     top: 7.2%;
@@ -200,7 +200,7 @@ ul#search-results {
 
 li.search-result {
     background-color: var(--main-bg-col);
-    color: var(--text-col);
+    color: var(--text-color);
     height: 10dvh;
     margin-bottom: 2dvh;
     width: 100%;
@@ -386,7 +386,7 @@ input#seek-slider {
 }
 
 span#audio-time {
-    color: var(--text-col);
+    color: var(--text-color);
 }
 
 span#audio-time>p {
@@ -478,7 +478,7 @@ span#audio-time>p {
 div#song-context-menu {
     width: 300px;
     background-color: var(--darken-40);
-    color: var(--text-col);
+    color: var(--text-color);
     display: none;
     position: absolute;
 }
@@ -545,5 +545,102 @@ div#song-context-menu li:hover {
         font-size: 1.3rem;
         padding: 0;
         margin: 0;
+    }
+}
+
+/* Safari compatability */
+@supports not (backdrop-filter: blur()) {
+    div#bg-overlay {
+        background-color: var(--fallback-bar-color);
+        display: inline-flex;
+    }
+
+    
+    div#app-container {
+        height: 90vh;
+    }
+
+    div.horizontal-song-list {
+        margin: 3vh 5vw;
+    }
+    
+    li.song-list-card {
+        margin: 1vh 0.5vw;
+    }
+
+    iframe#popup-frame {
+        height: 20vh;
+    }
+
+    div#popup-window-background {
+        height: 100vh;
+    }
+
+    ul#search-results {
+        max-height: 80vh;
+        top: 6vh;
+    }
+    
+    li.search-result {
+        height: 10vh;
+        margin-bottom: 2vh;
+    }
+    
+    img.result-album-cover {
+        height: 8vh;
+        margin: 1vh;
+    }
+
+    div#music-bar {
+        height: 10vh;
+    }
+
+    img#bar-album-cover {
+        height: 8vh;
+        margin: 1vh;
+    }
+    
+    div#button-controls {
+        height: 5vh;
+    }
+
+    div#seek-container {
+        height: 5vh;
+    }
+
+    input#volume-slider {
+        margin: auto 1vh;
+    }
+
+    .fullscreen-info {
+        height: 100vh !important;
+    }
+    
+    .fullscreen-info div#song-info {
+        height: 50vh;
+    }
+    
+    .fullscreen-info img#bar-album-cover {
+        height: 33vh;
+        margin: 10vh auto 2vh auto;
+    }
+
+    .fullscreen-info div#volume-controls {
+        margin: 2vh auto;
+    }
+
+    #home-button {
+        width: 50px;
+    }
+        
+    @media (max-width: 800px) {
+        ul#search-results {
+            max-height: 60vh;
+            top: 8vh;
+        }
+    
+        iframe#popup-frame {
+            height: 40vh;
+        }
     }
 }

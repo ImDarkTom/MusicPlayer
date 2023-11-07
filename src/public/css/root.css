@@ -1,12 +1,13 @@
 :root {
-    --text-col: #000000;
-    --text-hover-col: #eeeeee;
+    --text-color: #000000;
+    --secondary-text-color: #323232;
     --dropdown-bg-hover: #5f5f5f;
     --main-bg-col: #eeeeee;
     --card-color: #c1c1c1;
     --card-color-hover: #b1b1b1;
     --darken-40: rgba(0, 0, 0, 0.4);
     --shadow-10: 0 0 10px black;
+    --fallback-bar-color: rgb(201, 201, 201);
 }
 
 body, html {
@@ -22,8 +23,8 @@ body, html {
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --text-col: white;
-        --text-hover-col: #eeeeee;
+        --text-color: white;
+        --secondary-text-color: #cdcdcd;
         --bar-bg: grey;
         --bar-bg-hover: #5f5f5f;
         --main-bg-col: #222222;
@@ -31,5 +32,6 @@ body, html {
         --card-color-hover: #282828;
         --dropdown-bg: #141414;
         --darken-40: rgba(0, 0, 0, 0.4);
+        --fallback-bar-color: rgb(51, 51, 51);
     }
 }

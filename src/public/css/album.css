@@ -28,7 +28,7 @@
 h1,
 h2,
 h3 {
-    color: var(--text-col);
+    color: var(--text-color);
     margin: 0;
 }
 
@@ -38,7 +38,7 @@ h3 {
 
 #album-table {
     width: 100%;
-    color: var(--text-col);
+    color: var(--text-color);
     border-collapse: separate;
     border-spacing: 0 1rem;
     padding: 3dvh;
@@ -72,7 +72,7 @@ h3 {
 }
 
 #album-table tr#table-header {
-    box-shadow: 0px -1px 0px 0px var(--text-col) inset;
+    box-shadow: 0px -1px 0px 0px var(--text-color) inset;
 }
 
 #album-table tr:not(#table-header):hover {
