@@ -70,6 +70,25 @@ async function loadSuggested() {
     //Favs
     let favsList = getFavsList();
 
+    if (favsList.length == 0) {
+        const helpText = "Press the ♡ button while playing a song to add it to your favourites.";
+
+        const clone = document.createElement('li');
+
+        const titleElement = clone.querySelector('p.title');
+        const imageElement = clone.querySelector('img');
+
+
+        titleElement.textContent = helpText;
+        titleElement.classList.add("help-card-text");
+        titleElement.classList.remove("title");
+        titleElement.title = helpText;
+
+        imageElement.height = 0;
+
+        favsSongsList.appendChild(clone);
+    } 
+
     if (typeof favsList[0] == "string") {
         await updateSongListFormat('favourites', favsList);
 
