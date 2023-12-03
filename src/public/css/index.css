@@ -153,8 +153,6 @@ div#popup-window-background {
 /* search bar */
 #home-button {
     height: 100%;
-    aspect-ratio: 1/1;
-    width: auto;
     padding: 0;
     margin: 0;
     border: none;
@@ -168,7 +166,6 @@ div#popup-window-background {
 
 #home-button img {
     height: 100%;
-    width: 100%;
 }
 
 input#search {
@@ -633,10 +630,6 @@ div#song-context-menu li:hover {
 
     .fullscreen-info div#volume-controls {
         margin: 2vh auto;
-    }
-
-    #home-button {
-        width: 50px;
     }
         
     @media (max-width: 800px) {
