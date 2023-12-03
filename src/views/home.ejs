@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <script type="module" src="js/home/home.js"></script>
-    <link rel="stylesheet" href="css/root.css">
-    <link rel="stylesheet" href="css/index.css">
+    <script type="module" src="/js/home/home.js"></script>
+    <link rel="stylesheet" href="/css/root.css">
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
     <div id="favs-list-container" class="horizontal-song-list">
@@ -15,7 +15,15 @@
     </div>
     <div id="recent-uploads-container" class="horizontal-song-list">
         <h2>Recent Uploads</h2>
-        <ul id="recent-uploads" class="song-list horizontal-scroll-thin"></ul>
+        <ul id="recent-uploads" class="song-list horizontal-scroll-thin">
+            <% for (const upload of recentUploads) { %>
+                <li class="song-list-card" data-filename="<%= upload.file.filename %>">
+                    <img src="/details/<%= upload.file.filename %>/image" loading="lazy" height="500" width="500">
+                    <p class="title"><%= upload.meta.title %></p>
+                    <p class="artist"><%= upload.meta.artist %></p>
+                </li>
+            <% } %>
+        </ul>
     </div>
     <template id="song-list-card-template">
         <li class="song-list-card">

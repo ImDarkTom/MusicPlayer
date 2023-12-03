@@ -11,7 +11,18 @@ const port = config.port;
 
 const acceptedFileTypes = [".mp3", ".wav", ".ogg", ".aac"];
 
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, './views'));
+
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/home', (_req, res) => {
+    const recentUploads = db.getDB('music.json');
+
+    recentUploads.sort((a, b) => b.file.uploadtime - a.file.uploadtime);
+
+    res.render('home', { recentUploads: recentUploads });
+});
 
 app.get('/details/:fileName', (req, res) => {
     const metadata = db.getMetadata(req.params.fileName);
@@ -59,18 +70,9 @@ app.get('/album/:albumName', (req, res) => {
         return;
     }
 
-    const tracks = requestedAlbum.tracks;
-    const tracksMetadata = [];
+    const tracksMetadata = requestedAlbum.tracks.map((song) => db.getMetadata(song));
 
-    for (const song of tracks) {
-        const metadata = db.getMetadata(song);
-
-        tracksMetadata.push(metadata);
-    }
-
-    requestedAlbum.tracks = tracksMetadata;
-
-    res.json(requestedAlbum);
+    res.render('album', { album: { ...requestedAlbum, tracks: tracksMetadata } });
 });
 
 app.get("/search", (req, res) => {
@@ -93,7 +95,7 @@ app.get("/search", (req, res) => {
     res.json(resultList);
 });
 
-app.get("/api/recents", (req, res) => {
+app.get("/api/recents", (_req, res) => {
     try {
         const musicDB = db.getDB('music.json');
 

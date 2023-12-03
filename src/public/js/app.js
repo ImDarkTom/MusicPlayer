@@ -7,13 +7,13 @@ const [ hashLocation, hashArgs ] = window.location.hash.replace('#', '').split("
 
 function loadWindow(page, params = "") {
     if (page == "") {
-        mainIframe.src = "/home.html";
+        mainIframe.src = "/home";
         window.location.hash = "";
         return;
     }
 
     
-    mainIframe.src = `/${page}.html#${params}`;
+    mainIframe.src = `/${page}/${params}`;
     window.location.hash = `#${page}-${params}`;
 }
 
@@ -47,7 +47,13 @@ window.addEventListener('message', async (event) => {
     
 }, false);
 
-window.onhashchange = function() {
+function updateEmbedWindow() {
     const hash = window.location.hash.replace('#', '').split('-');
+
+    console.log(hash);
     loadWindow(hash[0], hash[1]);
+}
+
+window.onhashchange = function() {
+    updateEmbedWindow();
 };

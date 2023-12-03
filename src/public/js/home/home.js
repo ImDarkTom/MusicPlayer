@@ -2,7 +2,6 @@ import { sendMessage } from "../utils/sendPostMessage.js";
 
 const select = (selector) => document.querySelector(selector);
 const songListCardTemplate = select('template#song-list-card-template');
-const recentUploadsList = select('ul#recent-uploads');
 const favsSongsList = select('ul#fav-songs');
 
 function getFavsList() {
@@ -23,7 +22,7 @@ function createCard(songInfo) {
     const title = songInfo.meta.title;
     const album = songInfo.meta.album;
 
-    baseElement.onclick = function () { sendMessage(["PLAY_SONG", filename]); };
+    baseElement.setAttribute('data-filename', filename);
 
     titleElement.textContent = title;
     titleElement.title = title;
@@ -66,8 +65,7 @@ async function updateSongListFormat(storageKey, fileList) {
     localStorage.setItem(storageKey, JSON.stringify(newList));
 }
 
-async function loadSuggested() {
-    //Favs
+async function loadFavSongs() {
     let favsList = getFavsList();
 
     if (favsList.length == 0) {
@@ -93,16 +91,18 @@ async function loadSuggested() {
 
         favsSongsList.appendChild(card);
     }
-
-    //Recents
-    const response = await fetch(`/api/recents`);
-    const songInfoList = await response.json();
-
-    for (const songInfo of songInfoList) {
-        const card = createCard(songInfo);
-
-        recentUploadsList.appendChild(card);
-    }
 }
 
-loadSuggested();
+await loadFavSongs();
+
+const allSongCards = document.querySelectorAll('.song-list-card');
+
+console.log(allSongCards);
+
+allSongCards.forEach((card) => card.addEventListener('click', () => {
+    const filename = card.getAttribute('data-filename');
+
+    if (filename) {
+        sendMessage(["PLAY_SONG", filename]);
+    }
+}));
