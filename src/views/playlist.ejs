@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playlist</title>
+    <link rel="stylesheet" href="/css/root.css">
+    <link rel="stylesheet" href="/css/album.css">
+    <script src="/js/playlists.js" defer type="module"></script>
+    <script src="/js/playlist/playlist.js" defer type="module"></script>
+</head>
+<body data-playlist="<%= JSON.stringify(playlist) %>">
+    <div id="playlist-info">
+        <div id="bg-cover">
+            <img src="/details/<%= playlist.tracks[0].file.filename %>/image" id="main-album-cover">
+            <div id="text-info">
+                <h2>Playlist</h2>
+                <h1 id="name-text"><%= playlist.name %></h1>
+                <h3 id="year-text"><%= playlist.year %></h3>
+            </div>
+        </div>
+    </div>
+    <table id="playlist-table">
+        <tr id="table-header">
+            <th id="title-row">Title</th>
+            <th id="artist-row">Artist</th>
+            <th id="uploaddate-row">Upload Date</th>
+        </tr>
+        <% for (const track of playlist.tracks) { %>
+            <tr data-filename="<%= track.file.filename %>">
+                <td><%= track.meta.title %></td>
+                <td><%= track.meta.artist %></td>
+                <td><%- new Date(track.file.uploadtime).toLocaleDateString() %></td>
+            </tr>
+        <% } %>
+    </table>
+</body>
+</html>

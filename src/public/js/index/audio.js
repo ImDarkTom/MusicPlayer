@@ -1,33 +1,45 @@
 import * as icons from '../icons.js'
+import { Song } from '../playlists.js';
 import { sendMessage } from '../utils/sendPostMessage.js';
 import { getFavsList, setLocalStorageData } from '../utils/storage.js'
 
 // Selectors
+const SELECTORS = {
+    playingAudio: 'audio#playing',
+    musicBar: 'div#music-bar',
+    songCover: 'img#bar-album-cover',
+    artistText: 'p#bar-artist',
+    songNameText: 'p#bar-title',
+    loopBtn: 'button#loop-song',
+    favBtn: 'button#fav-song',
+    nextTrackBtn: 'button#next-track',
+    prevTrackBtn: 'button#prev-track',
+    playPauseBtn: 'button#play-pause',
+    volumeSlider: 'input#volume-slider',
+    volumeButton: 'button#volume',
+    seekSlider: 'input#seek-slider',
+    audioDuration: 'p#audioduration',
+    audioCurrent: 'p#audiocurrent',
+    contextMenu: 'div#song-context-menu',
+};
+
 const select = (selector) => document.querySelector(selector);
-const playingAudio = select('audio#playing');
-
-const musicBar = select('div#music-bar')
-
-const songCover = select('img#bar-album-cover');
-const artistText = select('p#bar-artist');
-const songNameText = select('p#bar-title');
-
-const loopBtn = select('button#loop-song');
-const favBtn = select('button#fav-song');
-const nextTrackBtn = select('button#next-track');
-const prevTrackBtn = select('button#prev-track');
-
-const playPauseBtn = select('button#play-pause');
-
-const volumeSlider = select('input#volume-slider');
-const volumeButton = select('button#volume');
-
-const seekSlider = select('input#seek-slider');
-const audioDuration = select("p#audioduration");
-
-const audioCurrent = select('p#audiocurrent');
-
-const contextMenu = select('div#song-context-menu');
+const playingAudio = select(SELECTORS.playingAudio);
+const musicBar = select(SELECTORS.musicBar);
+const songCover = select(SELECTORS.songCover);
+const artistText = select(SELECTORS.artistText);
+const songNameText = select(SELECTORS.songNameText);
+const loopBtn = select(SELECTORS.loopBtn);
+const favBtn = select(SELECTORS.favBtn);
+const nextTrackBtn = select(SELECTORS.nextTrackBtn);
+const prevTrackBtn = select(SELECTORS.prevTrackBtn);
+const playPauseBtn = select(SELECTORS.playPauseBtn);
+const volumeSlider = select(SELECTORS.volumeSlider);
+const volumeButton = select(SELECTORS.volumeButton);
+const seekSlider = select(SELECTORS.seekSlider);
+const audioDuration = select(SELECTORS.audioDuration);
+const audioCurrent = select(SELECTORS.audioCurrent);
+const contextMenu = select(SELECTORS.contextMenu);
 
 const hasMediaSession = navigator.mediaSession == undefined ? false : true;
 
@@ -168,11 +180,12 @@ function setAudioVolume() {
     playingAudio.volume = (volumeSlider.value / 100);
 }
 
-function playSong(fileName) {
-    playingAudio.src = "/song/" + fileName;
-    playingAudio.dataset.filename = fileName;
+function playSong(songObject) {
+    const filename = songObject.file.filename;
+    playingAudio.src = "/song/" + filename;
+    playingAudio.dataset.filename = filename;
     playingAudio.play();
-    loadSongMetaData(fileName);
+    loadSongMetaData(filename);
 }
 
 function loadPlaylist(list, index) {
@@ -198,7 +211,7 @@ function loadPrevTrack() {
     playSong(playlist[playlistIndex]);
 }
 
-async function loadSongMetaData(fileName) {
+async function loadSongMetaData(songObject) {
     const favsList = getFavsList();
 
     const response = await fetch(`/details/${fileName}`);

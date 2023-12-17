@@ -50,7 +50,6 @@ window.addEventListener('message', async (event) => {
 function updateEmbedWindow() {
     const hash = window.location.hash.replace('#', '').split('-');
 
-    console.log(hash);
     loadWindow(hash[0], hash[1]);
 }
 

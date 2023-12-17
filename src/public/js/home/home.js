@@ -97,8 +97,6 @@ await loadFavSongs();
 
 const allSongCards = document.querySelectorAll('.song-list-card');
 
-console.log(allSongCards);
-
 allSongCards.forEach((card) => card.addEventListener('click', () => {
     const filename = card.getAttribute('data-filename');
 
